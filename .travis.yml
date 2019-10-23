@@ -1,0 +1,18 @@
+language: python
+python:
+    - "3.6"
+    - "3.7"
+    - "3.8"
+
+script:
+    - ./build.sh
+    - pylint $(find src/ -name '*.py')
+
+deploy:
+    provider: releases
+    api_key: $GITHUB_OAUTH_TOKEN
+    file: "FILE TO UPLOAD"
+    skip_cleanup: true
+    draft: true
+    on:
+        tags: true
