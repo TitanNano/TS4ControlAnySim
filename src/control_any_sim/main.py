@@ -17,13 +17,13 @@ from control_any_sim.util.logger import Logger
 
 
 @inject_field_to(SimInfo, 'is_npc', (SetIsNpc))
-def tn_sim_info_is_npc(self):
+def tn_sim_info_is_npc(_original, self):
     return (services.active_sim_info() != self
             and services.active_household_id() != self.household_id)
 
 
 @inject_property_to(SimInfo, 'is_selectable')
-def tn_sim_info_is_selectable(self):
+def tn_sim_info_is_selectable(_original, self):
     active_household_id = services.active_household_id()
     client = (services.client_manager()
               .get_client_by_household_id(active_household_id))
@@ -35,7 +35,7 @@ def tn_sim_info_is_selectable(self):
 
 
 @inject_property_to(Sim, 'is_selected')
-def tn_sim_info_is_selected(self):
+def tn_sim_info_is_selected(_original, self):
     active_household_id = services.active_household_id()
     client = (services.client_manager()
               .get_client_by_household_id(active_household_id))

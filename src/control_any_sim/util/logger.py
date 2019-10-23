@@ -1,13 +1,11 @@
-import os
+from os import path
 
 
 def get_logfile_name():
-    log_dir = os.path.abspath(__file__)
-    log_dir = os.path.dirname(dir)
-    log_dir = os.path.dirname(dir)
-    log_dir = os.path.dirname(dir)
+    dir_name = path.dirname(path.abspath(__file__))
+    log_dir = path.normpath(path.join(dir_name, '../../../'))
 
-    return log_dir + '/debug.log'
+    return path.join(log_dir, 'debug.log')
 
 
 class Logger:

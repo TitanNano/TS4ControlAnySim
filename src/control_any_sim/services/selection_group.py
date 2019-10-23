@@ -1,4 +1,4 @@
-import os
+from os import path
 import traceback
 
 import services  # pylint: disable=import-error
@@ -9,10 +9,14 @@ from control_any_sim.util.logger import Logger
 from sims.sim_info_lod import SimInfoLODLevel  # pylint: disable=import-error
 
 
-HOME_DIR = os.path.abspath(__file__)
-HOME_DIR = os.path.dirname(HOME_DIR)
-HOME_DIR = os.path.dirname(HOME_DIR)
-HOME_DIR = os.path.dirname(HOME_DIR)
+def get_home_dir():
+    dir_name = path.dirname(path.abspath(__file__))
+    home_dir = path.normpath(path.join(dir_name, '../../../'))
+
+    return home_dir
+
+
+HOME_DIR = get_home_dir()
 
 
 @serialize
@@ -78,7 +82,7 @@ class SelectionGroupService:
     def persist_state(self):
         data = self.serialize()  # pylint: disable=no-member
 
-        file_handler = open(HOME_DIR + '/selection_group.json', 'w')
+        file_handler = open(path.join(HOME_DIR, 'selection_group.json'), 'w')
         file_handler.write(data)
         file_handler.close()
 

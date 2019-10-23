@@ -1,8 +1,8 @@
-#!/user/bin/env bash
+#!/usr/bin/env bash
 
 src="src"
 
-python3 -m compileall $src/ -d ./dist
+python3 -m compileall $src/
 
 for file in $(find $src -name '*.pyc')
 do
@@ -19,7 +19,7 @@ do
     rm -r $cache_dir
 done
 
-cd dist && zip -r TS4ControlAnySim.ts4script ./
+cd dist && zip -r ControlAnySim.ts4script ./
 
 cd ..
 cp package/*.package dist/
