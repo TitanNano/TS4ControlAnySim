@@ -2,7 +2,30 @@
 
 set -euo pipefail
 
+deploy=0
 src="src"
+package_name="ControlAnySim"
+
+while [ "${1-}" != "" ]; do
+    case "$1" in
+        "--deploy")
+            deploy=1
+            ;;
+
+        "--src")
+            shift
+            src="$1"
+            ;;
+
+        "--package-name")
+            shift
+            package_name="$1"
+            ;;
+    esac
+    shift
+done
+
+rm -r dist/
 
 python3 -m compileall $src/
 
@@ -21,7 +44,20 @@ do
     rm -r $cache_dir
 done
 
-cd dist && zip -r ControlAnySim.ts4script ./
+install_dir="."
+
+if [[ $deploy -eq 1 ]]; then
+    install_dir="$package_name"
+
+    mkdir -p dist/$install_dir/
+fi
+
+cd dist/ && zip -r $install_dir/$package_name.ts4script ./control_any_sim
 
 cd ..
-cp package/*.package dist/
+cp package/*.package dist/$install_dir/
+
+if [[ $deploy -eq 1 ]]; then
+    cd dist/
+    zip -r $package_name.zip ./$install_dir
+fi

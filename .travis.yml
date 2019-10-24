@@ -8,14 +8,19 @@ install:
     - pip install pylint
 
 script:
-    - ./build.sh
+    - "./build.sh"
     - pylint $(find src/ -name '*.py')
+
+defore_deploy:
+    - "./build.sh --deploy"
 
 deploy:
     provider: releases
-    api_key: $GITHUB_OAUTH_TOKEN
-    file: "FILE TO UPLOAD"
+    api_key:
+        secure: "$GITHUB_ACCESS_TOKEN"
+    file: "dist/ControlAnySim.zip"
     skip_cleanup: true
     draft: true
     on:
         tags: true
+        repo: TitanNano/TS4ControlAnySim
