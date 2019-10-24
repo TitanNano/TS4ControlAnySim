@@ -25,7 +25,7 @@ while [ "${1-}" != "" ]; do
     shift
 done
 
-rm -r dist/
+rm -rf dist/
 
 python3 -m compileall $src/
 
