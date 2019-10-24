@@ -47,7 +47,7 @@ class SimMakeSelectableInteraction(ImmediateSuperInteraction):
             if target is None or target.sim_info.id != info_target.id:
                 return TestResult.TRUE
 
-            return (super(__class__, inst_or_cls)
+            return (super(SimMakeSelectableInteraction, inst_or_cls)
                     .test(*args, target=target, context=context, **kwargs))
 
         except BaseException:
@@ -115,7 +115,7 @@ class SimMakeNotSelectableInteraction(ImmediateSuperInteraction):
         if target is None or target.sim_info.id != info_target.id:
             return TestResult.TRUE
 
-        return (super(__class__, inst_or_cls)
+        return (super(SimMakeNotSelectableInteraction, inst_or_cls)
                 .test(*args, target=target, context=context, **kwargs))
 
     def _run_interaction_gen(self, timeline):
