@@ -24,3 +24,4 @@ deploy:
     on:
         tags: true
         repo: TitanNano/TS4ControlAnySim
+        python: "3.7"
