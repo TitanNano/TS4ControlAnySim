@@ -11,7 +11,7 @@ script:
     - "./build.sh"
     - pylint $(find src/ -name '*.py')
 
-defore_deploy:
+before_deploy:
     - "./build.sh --deploy"
 
 deploy:
