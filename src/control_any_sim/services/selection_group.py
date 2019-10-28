@@ -7,6 +7,8 @@ from control_any_sim.util.serialize import serialize
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
 from sims.sim_info_lod import SimInfoLODLevel  # pylint: disable=import-error
+from objects import ALL_HIDDEN_REASONS  # pylint: disable=import-error,E0611
+from objects.components.types import INVENTORY_COMPONENT  # pylint: disable=import-error,E0611
 
 
 def get_home_dir():
@@ -113,6 +115,15 @@ class SelectionGroupService:
         Logger.log("sim {} lod is now: {}".format(sim_info, sim_info.lod))
 
         sim_info.away_action_tracker.refresh(on_travel_away=True)
+        sim_info.relationship_tracker.clean_and_send_remaining_relationship_info()
+
+        sim_instance = sim_info.get_sim_instance(allow_hidden_flags=ALL_HIDDEN_REASONS)
+
+        if sim_instance is not None:
+            inventory = sim_instance.get_component(INVENTORY_COMPONENT)
+            inventory.publish_inventory_items()
+        else:
+            Logger.log('there is no sim instance for {}'.format(sim_info))
 
         for rel in sim_info.relationship_tracker:
             rel_sim_info = rel.get_other_sim_info(sim_info.id)

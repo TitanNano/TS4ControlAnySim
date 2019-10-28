@@ -14,6 +14,7 @@ from control_any_sim.services.selection_group import SelectionGroupService
 from control_any_sim.services.interactions import InteractionsService
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
+from objects.components.sim_inventory_component import SimInventoryComponent  # pylint: disable=import-error,E0611
 
 
 @inject_field_to(SimInfo, 'is_npc', (SetIsNpc))
@@ -68,6 +69,14 @@ def tn_zone_director_residential_base_is_any_sim_always_greeted(original,
                                .get(services.active_household_id()).selectable_sims):
             continue
 
+        return True
+
+    return original(self)
+
+
+@inject_method_to(SimInventoryComponent, 'allow_ui')
+def tn_sim_inventory_component_allow_ui(original, self):
+    if self.owner.is_selected:
         return True
 
     return original(self)
