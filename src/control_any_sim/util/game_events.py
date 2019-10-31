@@ -5,6 +5,7 @@ from control_any_sim.util.logger import Logger
 
 import zone  # pylint: disable=import-error
 import sims  # pylint: disable=import-error
+import services  # pylint: disable=import-error
 
 
 class GameEvents:
@@ -39,6 +40,10 @@ class GameEvents:
     def emit_add_sim(cls, sim):
         for handler in cls.add_sim_handlers:
             handler(sim)
+
+    @classmethod
+    def on_active_sim_changed(cls, handler):
+        services.get_first_client().register_active_sim_changed(handler)
 
 
 @inject_method_to(zone.Zone, 'on_teardown')

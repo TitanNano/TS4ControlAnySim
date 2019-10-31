@@ -80,6 +80,7 @@ class SelectionGroupService:
             self.update_selectable_sims()
 
         GameEvents.on_zone_teardown(self.on_zone_teardown)
+        GameEvents.on_active_sim_changed(self.on_active_sim_changed)
 
     def persist_state(self):
         data = self.serialize()  # pylint: disable=no-member
@@ -109,23 +110,8 @@ class SelectionGroupService:
 
         currently_active_sim = self.client.active_sim_info
 
+        # force the game to update now selectable NPC tracker information
         self.client.set_active_sim_by_id(sim_info.id)
-        sim_info.request_lod(SimInfoLODLevel.ACTIVE)
-
-        Logger.log("sim {} lod is now: {}".format(sim_info, sim_info.lod))
-
-        sim_info.away_action_tracker.refresh(on_travel_away=True)
-        sim_info.relationship_tracker.clean_and_send_remaining_relationship_info()
-        sim_info.publish_all_commodities()
-
-        sim_instance = sim_info.get_sim_instance(allow_hidden_flags=ALL_HIDDEN_REASONS)
-
-        if sim_instance is not None:
-            inventory = sim_instance.get_component(INVENTORY_COMPONENT)
-            inventory.publish_inventory_items()
-        else:
-            Logger.log('there is no sim instance for {}'.format(sim_info))
-
         self.client.set_active_sim_by_id(currently_active_sim.id)
 
     def remove_sim(self, sim_info):
@@ -150,3 +136,35 @@ class SelectionGroupService:
         Logger.log("is sim {} in selectable list: {}".format(sim_id, test))
 
         return test
+
+    def on_active_sim_changed(self, _old_sim, _new_sim):
+
+        sim_info = self.client.active_sim_info
+
+        if sim_info is None:
+            Logger.log("sim selection changed but no sim is selected")
+            return
+
+        if sim_info.household_id == self.household_id:
+            return
+
+        try:
+            sim_info.request_lod(SimInfoLODLevel.ACTIVE)
+
+            Logger.log("sim {} lod is now: {}".format(sim_info, sim_info.lod))
+
+            sim_info.away_action_tracker.refresh(on_travel_away=True)
+            sim_info.relationship_tracker.clean_and_send_remaining_relationship_info()
+            sim_info.publish_all_commodities()
+
+            sim_instance = sim_info.get_sim_instance(allow_hidden_flags=ALL_HIDDEN_REASONS)
+
+            if sim_instance is not None:
+                inventory = sim_instance.get_component(INVENTORY_COMPONENT)
+                inventory.publish_inventory_items()
+            else:
+                Logger.log('there is no sim instance for {}'.format(sim_info))
+
+        except BaseException:
+            Logger.log("Error while updating newly active sim: {}".format(sim_info))
+            Logger.log(traceback.format_exc())
