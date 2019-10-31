@@ -2,19 +2,20 @@ import traceback
 
 import services   # pylint: disable=import-error
 
+import control_any_sim.cheats  # pylint: disable=unused-import
 
 from sims.sim_info import SimInfo  # pylint: disable=import-error
 from sims.sim import Sim  # pylint: disable=import-error
 from distributor.ops import SetIsNpc  # pylint: disable=import-error
 
 from venues.zone_director_residential import ZoneDirectorResidentialBase  # pylint: disable=import-error
+from objects.components.sim_inventory_component import SimInventoryComponent  # pylint: disable=import-error,E0611
 
 from control_any_sim.util.inject import inject_method_to, inject_field_to, inject_property_to
 from control_any_sim.services.selection_group import SelectionGroupService
 from control_any_sim.services.interactions import InteractionsService
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
-from objects.components.sim_inventory_component import SimInventoryComponent  # pylint: disable=import-error,E0611
 
 
 @inject_field_to(SimInfo, 'is_npc', (SetIsNpc))
