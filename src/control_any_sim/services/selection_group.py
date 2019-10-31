@@ -116,6 +116,7 @@ class SelectionGroupService:
 
         sim_info.away_action_tracker.refresh(on_travel_away=True)
         sim_info.relationship_tracker.clean_and_send_remaining_relationship_info()
+        sim_info.publish_all_commodities()
 
         sim_instance = sim_info.get_sim_instance(allow_hidden_flags=ALL_HIDDEN_REASONS)
 
@@ -124,12 +125,6 @@ class SelectionGroupService:
             inventory.publish_inventory_items()
         else:
             Logger.log('there is no sim instance for {}'.format(sim_info))
-
-        for rel in sim_info.relationship_tracker:
-            rel_sim_info = rel.get_other_sim_info(sim_info.id)
-
-            Logger.log("{} has relationship: {}".format(sim_info, rel_sim_info))
-            Logger.log("{} has lod: {}".format(rel_sim_info, rel_sim_info.lod))
 
         self.client.set_active_sim_by_id(currently_active_sim.id)
 
