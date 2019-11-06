@@ -95,7 +95,11 @@ class SelectionGroupService:
         self.selectable_sims = [sim_info.id for sim_info in selectable_sims]
 
     def on_zone_teardown(self, _zone, _client):
-        Logger.log('on_zone_teardown')
+        Logger.log('on_zone_teardown: tearing down SelectionGroupService')
+
+        if not self.zone_is_setup:
+            Logger.log("SelectionGroupService is already teared down")
+            return
 
         self.persist_state()
         self.cleanup_sims()
@@ -139,6 +143,10 @@ class SelectionGroupService:
         return test
 
     def on_active_sim_changed(self, _old_sim, _new_sim):
+
+        if self.client is None:
+            Logger.log("active sim changed but we have no client, yet?")
+            return
 
         sim_info = self.client.active_sim_info
 
