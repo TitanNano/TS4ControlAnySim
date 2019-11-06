@@ -1,0 +1,22 @@
+{
+  "Locale": 8,
+  "Version": 5,
+  "Compressed": 0,
+  "Reserved": "AAA=",
+  "Entries": [
+    {
+      "Key": "0x28F6C433",
+      "Value": "Sim Steuern"
+    },
+    {
+      "Key": "0xB195FFA1",
+      "Value": "Sim nicht mehr Steuern"
+    }
+  ],
+  "DataLength": "0x00000023",
+  "Key": {
+    "Type": "0x220557DA",
+    "Group": "0x00000000",
+    "Instance": "0x082152B569947D97"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Locale": 17,
+  "Version": 5,
+  "Compressed": 0,
+  "Reserved": "AAA=",
+  "Entries": [
+    {
+      "Key": "0x28F6C433",
+      "Value": "Make Selectable"
+    },
+    {
+      "Key": "0xB195FFA1",
+      "Value": "Make Not Selectable"
+    }
+  ],
+  "DataLength": "0x00000024",
+  "Key": {
+    "Type": "0x220557DA",
+    "Group": "0x00000000",
+    "Instance": "0x112152B569947D97"
+  }
+}

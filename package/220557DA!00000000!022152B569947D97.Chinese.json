@@ -1,0 +1,22 @@
+{
+  "Locale": 2,
+  "Version": 5,
+  "Compressed": 0,
+  "Reserved": "AAA=",
+  "Entries": [
+    {
+      "Key": "0x28F6C433",
+      "Value": "可选择 "
+    },
+    {
+      "Key": "0xB195FFA1",
+      "Value": "不可选择"
+    }
+  ],
+  "DataLength": "0x00000018",
+  "Key": {
+    "Type": "0x220557DA",
+    "Group": "0x00000000",
+    "Instance": "0x022152B569947D97"
+  }
+}
