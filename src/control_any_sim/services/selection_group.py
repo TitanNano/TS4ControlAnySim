@@ -97,8 +97,9 @@ class SelectionGroupService:
     def on_zone_teardown(self, _zone, _client):
         Logger.log('on_zone_teardown')
 
-        # client.selectable_sims.remove_watcher(self)
         self.persist_state()
+        self.cleanup_sims()
+
         self.zone_is_setup = False
         self.__class__.instance = None
 
@@ -168,3 +169,14 @@ class SelectionGroupService:
         except BaseException:
             Logger.log("Error while updating newly active sim: {}".format(sim_info))
             Logger.log(traceback.format_exc())
+
+    def cleanup_sims(self):
+        for sim_info_id in self.selectable_sims:
+            sim_info = services.sim_info_manager().get(sim_info_id)
+
+            if sim_info.household_id == self.household_id:
+                return
+
+            Logger.log("{} is not in household, removing to avoid teardown issues".format(sim_info))
+
+            self.remove_sim(sim_info)
