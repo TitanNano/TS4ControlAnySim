@@ -6,11 +6,11 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "Make Selectable"
+      "Value": "contrôler le sim"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "Make Not Selectable"
+      "Value": "ne pas contrôler le sim"
     }
   ],
   "DataLength": "0x00000024",
