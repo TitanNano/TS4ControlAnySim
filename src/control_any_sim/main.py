@@ -62,12 +62,14 @@ InteractionsService.bootstrap()
 @inject_method_to(ZoneDirectorResidentialBase, '_is_any_sim_always_greeted')
 def tn_zone_director_residential_base_is_any_sim_always_greeted(original,
                                                                 self):
-    active_lot_household = (services.current_zone()
-                            .get_active_lot_owner_household())
+    active_lot_household = services.current_zone().get_active_lot_owner_household()
+    selection_group = SelectionGroupService.get(services.active_household_id())
+
+    if active_lot_household is None:
+        return original(self)
 
     for sim_info in active_lot_household.sim_infos:
-        if sim_info.id not in (SelectionGroupService
-                               .get(services.active_household_id()).selectable_sims):
+        if sim_info.id not in selection_group.selectable_sims:
             continue
 
         return True
