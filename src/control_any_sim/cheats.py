@@ -2,6 +2,8 @@ import traceback
 
 import services  # pylint: disable=import-error
 
+import control_any_sim
+
 from sims4 import commands  # pylint: disable=import-error
 
 from control_any_sim.services.selection_group import SelectionGroupService
@@ -73,3 +75,11 @@ def log_sim_info(_connection=None):
     output('can away actions: {}'
            .format(sim_info.away_action_tracker
                    .is_sim_info_valid_to_run_away_actions()))
+
+
+@commands.Command('canys.version', command_type=(commands.CommandType.Live))
+def canys_get_version_command(_connection=None):
+    output = commands.CheatOutput(_connection)
+    version = control_any_sim.__version__
+
+    output('you are currently running version {} of Control Any Sim'.format(version))
