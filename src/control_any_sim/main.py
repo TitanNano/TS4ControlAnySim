@@ -16,6 +16,7 @@ from control_any_sim.services.selection_group import SelectionGroupService
 from control_any_sim.services.interactions import InteractionsService
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
+from control_any_sim.services.integrity import IntegrityService
 
 
 @inject_field_to(SimInfo, 'is_npc', (SetIsNpc))
@@ -83,3 +84,11 @@ def tn_sim_inventory_component_allow_ui(original, self):
         return True
 
     return original(self)
+
+
+Logger.log('starting control_any_sim')
+
+
+@GameEvents.on_loading_screen_animation_finished
+def canys_validate_version(_zone):
+    IntegrityService.check_integrety(control_any_sim.__version__)

@@ -36,6 +36,9 @@ fi
 
 rm -rf dist/
 
+current_version=$(git describe --tag)
+echo "__version__ = \"${current_version:1}\"" > src/control_any_sim/__init__.py
+
 python3 -m compileall $src/
 
 for file in $(find $src -name '*.pyc')
@@ -76,3 +79,5 @@ if [[ $deploy -eq 1 ]]; then
     cd dist/
     zip -r $package_name.zip ./$install_dir
 fi
+
+git checkout src/control_any_sim/__init__.py

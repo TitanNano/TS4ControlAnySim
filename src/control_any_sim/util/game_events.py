@@ -13,6 +13,7 @@ class GameEvents:
     zone_teardown_handlers = list()
     zone_spin_up_handlers = list()
     add_sim_handlers = list()
+    loading_screen_animation_finished_handlers = list()
 
     @classmethod
     def on_zone_teardown(cls, handler):
@@ -45,6 +46,15 @@ class GameEvents:
     def on_active_sim_changed(cls, handler):
         services.get_first_client().register_active_sim_changed(handler)
 
+    @classmethod
+    def on_loading_screen_animation_finished(cls, handler):
+        cls.loading_screen_animation_finished_handlers.append(handler)
+
+    @classmethod
+    def emit_loading_screen_animation_finished(cls, current_zone):
+        for handler in cls.loading_screen_animation_finished_handlers:
+            handler(current_zone)
+
 
 @inject_method_to(zone.Zone, 'on_teardown')
 def tn_zone_on_teardown(original, self, client):
@@ -75,5 +85,17 @@ def tn_sim_on_add(original, self):
         GameEvents.emit_add_sim(self)
 
         return result
+    except BaseException:
+        Logger.log(traceback.format_exc())
+
+
+@inject_method_to(zone.Zone, 'on_loading_screen_animation_finished')
+def canys_zone_on_loading_screen_animation_finished(original, self):
+    Logger.log('do_on_loading_screen_animation_finished')
+
+    try:
+        GameEvents.emit_loading_screen_animation_finished(self)
+
+        return original(self)
     except BaseException:
         Logger.log(traceback.format_exc())

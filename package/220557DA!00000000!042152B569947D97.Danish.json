@@ -6,14 +6,30 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "Don't Control Sim"
+      "Value": "Control Sim"
     },
     {
       "Key": "0xB195FFA1",
       "Value": "Don't Control Sim"
+    },
+    {
+      "Key": "0x098A53E9",
+      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+    },
+    {
+      "Key": "0x39BA3179",
+      "Value": "Quit Game"
+    },
+    {
+      "Key": "0x688D35BF",
+      "Value": "I know what I'm doing"
+    },
+    {
+      "Key": "0x915E911B",
+      "Value": "Control Any Sim WARNING"
     }
   ],
-  "DataLength": "0x00000024",
+  "DataLength": "0x0000016E",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",

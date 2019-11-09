@@ -11,9 +11,25 @@
     {
       "Key": "0xB195FFA1",
       "Value": "Sim nicht mehr Steuern"
+    },
+    {
+      "Key": "0x098A53E9",
+      "Value": "Du verwendest gerade ControlAnySim Version {0.String}, dies ist eine experimentelle Vorabversion!\\n\\nExperimentelle Versionen sind nicht für normale Spieler gedacht, sondern um Fehlerbehebungen und neue Funktionen zu testen!\\n\\nWenn die diese Version nicht absichtlich installiert hast, solltest du sie auf keinen Fall benutzen!"
+    },
+    {
+      "Key": "0x39BA3179",
+      "Value": "Spiel Beenden"
+    },
+    {
+      "Key": "0x688D35BF",
+      "Value": "Ich weiß was ich tue!"
+    },
+    {
+      "Key": "0x915E911B",
+      "Value": "Control Any Sim WARNUNG"
     }
   ],
-  "DataLength": "0x00000023",
+  "DataLength": "0x000001AA",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",
