@@ -69,15 +69,16 @@ cd dist/ && zip -r $install_dir/$package_name.ts4script ./control_any_sim
 cd ..
 cp package/*.package dist/$install_dir/
 
+if [[ $deploy -eq 1 ]]; then
+    cd dist/
+    zip -r $package_name.zip ./$install_dir
+    cd ..
+fi
+
+git checkout src/control_any_sim/__init__.py
+
 if [[ $test -eq 1 ]]; then
     cp -r dist/$install_dir/*.{package,ts4script} "$TS4_MODS_DIR/$package_name/"
 
     "$TS4_BIN"
 fi
-
-if [[ $deploy -eq 1 ]]; then
-    cd dist/
-    zip -r $package_name.zip ./$install_dir
-fi
-
-git checkout src/control_any_sim/__init__.py
