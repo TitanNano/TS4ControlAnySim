@@ -5,6 +5,7 @@ set -euo pipefail
 deploy=0
 src="src"
 package_name="ControlAnySim"
+test=0
 
 while [ "${1-}" != "" ]; do
     case "$1" in
@@ -21,9 +22,17 @@ while [ "${1-}" != "" ]; do
             shift
             package_name="$1"
             ;;
+
+        "--test")
+            test=1
+            ;;
     esac
     shift
 done
+
+if [[ -f ".env" ]]; then
+    source .env
+fi
 
 rm -rf dist/
 
@@ -56,6 +65,12 @@ cd dist/ && zip -r $install_dir/$package_name.ts4script ./control_any_sim
 
 cd ..
 cp package/*.package dist/$install_dir/
+
+if [[ $test -eq 1 ]]; then
+    cp -r dist/$install_dir/*.{package,ts4script} "$TS4_MODS_DIR/$package_name/"
+
+    "$TS4_BIN"
+fi
 
 if [[ $deploy -eq 1 ]]; then
     cd dist/
