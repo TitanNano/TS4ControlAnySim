@@ -1,4 +1,4 @@
-from ui.ui_dialog import UiDialogOk, UiDialogResponse, ButtonType  # pylint: disable=import-error
+from ui.ui_dialog import UiDialogOk, UiDialogResponse, ButtonType  # pylint: disable=import-error,no-name-in-module
 from sims4.localization import TunableLocalizedStringFactory  # pylint: disable=import-error
 
 
