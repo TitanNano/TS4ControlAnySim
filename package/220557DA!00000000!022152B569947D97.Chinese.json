@@ -6,30 +6,30 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "可选择 "
+      "Value": "可控制此Sim"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "不可选择"
+      "Value": "不可控制此Sim"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+      "Value": "您现在使用的是ControlAnySim测试版本{0.String}。这个测试版本主要针对那些想要检测漏洞是否被修复以及测试新功能的玩家所设计。\\n\\n如果您不想进行测试，又不小心安装了此版本，请勿使用。"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "Quit Game"
+      "Value": "退出游戏"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "I know what I'm doing"
+      "Value": "我知道我在做什么"
     },
     {
       "Key": "0x915E911B",
-      "Value": "Control Any Sim WARNING"
+      "Value": "Control Any Sim 注意事项"
     }
   ],
-  "DataLength": "0x00000168",
+  "DataLength": "0x00000163",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",
