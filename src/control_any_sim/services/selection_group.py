@@ -76,7 +76,7 @@ class SelectionGroupService:
         self.household_id = household_id
         self.selectable_sims = selectable_sims
 
-        if self.selectable_sims is None:
+        if self.selectable_sims is None or len(self.selectable_sims) == 0:
             self.update_selectable_sims()
 
         GameEvents.on_zone_teardown(self.on_zone_teardown)
