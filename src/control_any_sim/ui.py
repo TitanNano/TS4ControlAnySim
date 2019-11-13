@@ -9,7 +9,7 @@ def get_string(string_id):
 def create_dialog(owner=None, dialog_class=UiDialogOk, **kwargs):
     dialog_factory_loader = dialog_class.TunableFactory(**kwargs)
 
-    dialog_factory = dialog_factory_loader.load_etree_node()
+    dialog_factory = dialog_factory_loader.load_etree_node(None, None, None)
     dialog = dialog_factory(owner)
 
     return dialog
