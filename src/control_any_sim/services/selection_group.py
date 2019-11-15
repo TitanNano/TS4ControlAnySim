@@ -142,7 +142,7 @@ class SelectionGroupService:
 
                 self.make_sim_selectable(sim_info)
             except BaseException:
-                Logger.log("Error while adding sim to skewer: {}".format(sim_info))
+                Logger.log("Error while adding sim to skewer: {}".format(sim_info_id))
                 Logger.log(traceback.format_exc())
 
         self.client.selectable_sims.add_watcher(self, self.update_selectable_sims)
