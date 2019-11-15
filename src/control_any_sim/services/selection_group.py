@@ -123,6 +123,12 @@ class SelectionGroupService:
         self.client.remove_selectable_sim_by_id(sim_info.id)
 
     def setup_zone(self):
+        for sim_info in self.client.selectable_sims:
+            if sim_info.id in self.selectable_sims:
+                continue
+
+            self.remove_sim(sim_info)
+
         for sim_info_id in self.selectable_sims:
             try:
                 sim_info = services.sim_info_manager().get(sim_info_id)

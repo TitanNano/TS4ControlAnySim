@@ -104,9 +104,6 @@ class SimMakeNotSelectableInteraction(ImmediateSuperInteraction):
 
         Logger.log('info_target: {}'.format(info_target))
 
-        if cls.must_be_selectable(info_target):
-            return TestResult(False, "sim is in active household and has to be selectable")
-
         sim_is_selectable = (SelectionGroupService
                              .get(0).is_selectable(info_target.id))
 
