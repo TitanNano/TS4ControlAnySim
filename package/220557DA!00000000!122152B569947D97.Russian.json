@@ -6,27 +6,27 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "Control Sim"
+      "Value": "Управлять Симом"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "Don't Control Sim"
+      "Value": "Перестать управлять Симом"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+      "Value": "Сейчас Вы используете Управляй Любым Симом версии {0.String}, являющейся экспериментальной версией предварительного просмотра!\\n\\nЭкспериментальные версии предназначены не для обычных игроков, а для тестирования новых функций и исправления ошибок!\\n\\nЕсли Вы не устанавливали эту версию намеренно, не используйте ее!"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "Quit Game"
+      "Value": "Выйти из игры"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "I know what I'm doing"
+      "Value": "Я знаю, что делаю"
     },
     {
       "Key": "0x915E911B",
-      "Value": "Control Any Sim WARNING"
+      "Value": "ПРЕДУПРЕЖДЕНИЕ от Управляй Любым Симом"
     },
     {
       "Key": "0x083C2912",
@@ -37,7 +37,7 @@
       "Value": "Remove From Roommates"
     }
   ],
-  "DataLength": "0x00000195",
+  "DataLength": "0x00000335",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",
