@@ -27,9 +27,17 @@
     {
       "Key": "0x915E911B",
       "Value": "Control Any Sim WARNING"
+    },
+    {
+      "Key": "0x083C2912",
+      "Value": "Add To Roommates"
+    },
+    {
+      "Key": "0xA7E24CAA",
+      "Value": "Remove From Roommates"
     }
   ],
-  "DataLength": "0x0000017B",
+  "DataLength": "0x000001A2",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",

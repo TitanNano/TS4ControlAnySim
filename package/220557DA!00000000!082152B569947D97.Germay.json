@@ -27,9 +27,17 @@
     {
       "Key": "0x915E911B",
       "Value": "Control Any Sim WARNUNG"
+    },
+    {
+      "Key": "0x083C2912",
+      "Value": "Mitbewohner Hinzufügen"
+    },
+    {
+      "Key": "0xA7E24CAA",
+      "Value": "Mitbewohner Entfernen "
     }
   ],
-  "DataLength": "0x000001AA",
+  "DataLength": "0x000001D9",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",

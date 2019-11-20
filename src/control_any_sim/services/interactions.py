@@ -9,6 +9,8 @@ class InteractionsService:
     sim_interactions = (
         16489283597599966859,
         10989771389858450567,
+        18214597616328370004,
+        16534221441995016557
     )
 
     @classmethod
