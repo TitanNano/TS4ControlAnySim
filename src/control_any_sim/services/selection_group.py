@@ -70,7 +70,7 @@ class SelectionGroupService:
 
     @property
     def client(self):
-        return services.client_manager().get_client_by_household_id(self.household_id)
+        return services.get_first_client()
 
     def __init__(self, household_id, selectable_sims=None, zone_is_setup=None):  # pylint: disable=unused-argument
         self.household_id = household_id
