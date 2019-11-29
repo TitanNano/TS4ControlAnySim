@@ -45,7 +45,7 @@ def inject_field_to(target_object, target_function, operator):
 def inject_property_to(target_object, target_function):
     def _inject_to(new_getter):
         target_property = getattr(target_object, target_function)
-        target_getter = target_property.getter
+        target_getter = target_property.__get__
 
         injected_getter = inject(target_getter, new_getter)
         new_property = property(injected_getter)

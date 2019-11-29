@@ -35,9 +35,17 @@
     {
       "Key": "0xA7E24CAA",
       "Value": "Remove From Roommates"
+    },
+    {
+      "Key": "0x284AD579",
+      "Value": "Turn Into Household NPC"
+    },
+    {
+      "Key": "0xDECE0085",
+      "Value": "Turn Into Household Member"
     }
   ],
-  "DataLength": "0x00000335",
+  "DataLength": "0x00000368",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",

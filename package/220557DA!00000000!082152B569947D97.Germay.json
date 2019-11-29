@@ -34,10 +34,18 @@
     },
     {
       "Key": "0xA7E24CAA",
-      "Value": "Mitbewohner Entfernen "
+      "Value": "Mitbewohner Entfernen"
+    },
+    {
+      "Key": "0x284AD579",
+      "Value": "In Haushalt NPC Umwandeln"
+    },
+    {
+      "Key": "0xDECE0085",
+      "Value": "In Haushaltsmitglied Umwandeln"
     }
   ],
-  "DataLength": "0x000001D9",
+  "DataLength": "0x00000211",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",

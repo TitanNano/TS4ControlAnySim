@@ -26,12 +26,19 @@ class SelectionGroupService:
 
     instance = None
     zone_is_setup = False
+    household_id = None
+    selectable_sims = None
+    household_npcs = None
 
     @classmethod
-    def get(cls, household_id):
-        Logger.log('get selection group instance')
+    def get(cls, household_id, no_init=False):
+        if no_init and not cls.instance:
+            return None
 
         cls.instance = cls.get_instance(household_id)
+
+        if no_init:
+            return cls.instance
 
         if not cls.instance.zone_is_setup:
             cls.instance.setup_zone()
@@ -41,10 +48,10 @@ class SelectionGroupService:
 
     @classmethod
     def get_instance(cls, household_id):
-        Logger.log('class instance exists {}'.format(cls.instance is not None))
-
         if cls.instance is not None:
             return cls.instance
+
+        Logger.log("selection group: no instance, {}".format(household_id))
 
         # restore state
         try:
@@ -72,9 +79,10 @@ class SelectionGroupService:
     def client(self):
         return services.get_first_client()
 
-    def __init__(self, household_id, selectable_sims=None, zone_is_setup=None):  # pylint: disable=unused-argument
+    def __init__(self, household_id, selectable_sims=None, zone_is_setup=None, household_npcs=None):  # pylint: disable=unused-argument
         self.household_id = household_id
         self.selectable_sims = selectable_sims
+        self.household_npcs = household_npcs if household_npcs is not None else list()
 
         if self.selectable_sims is None or len(self.selectable_sims) == 0:
             self.update_selectable_sims()
@@ -104,6 +112,8 @@ class SelectionGroupService:
         self.persist_state()
         self.cleanup_sims()
 
+        GameEvents.remove_zone_teardown(self.on_zone_teardown)
+
         self.zone_is_setup = False
         self.__class__.instance = None
 
@@ -123,6 +133,9 @@ class SelectionGroupService:
         self.client.remove_selectable_sim_by_id(sim_info.id)
 
     def setup_zone(self):
+        if len(self.household_npcs) > 0:
+            self.client.send_selectable_sims_update()
+
         for sim_info_id in self.selectable_sims:
             try:
                 sim_info = services.sim_info_manager().get(sim_info_id)
@@ -188,3 +201,14 @@ class SelectionGroupService:
             Logger.log("{} is not in household, removing to avoid teardown issues".format(sim_info))
 
             self.remove_sim(sim_info)
+
+    def add_household_npc(self, sim_info):
+        self.household_npcs.append(sim_info.id)
+        self.client.send_selectable_sims_update()
+
+    def remove_household_npc(self, sim_info):
+        self.household_npcs.remove(sim_info.id)
+        self.client.send_selectable_sims_update()
+
+    def is_household_npc(self, sim_info):
+        return sim_info.id in self.household_npcs
