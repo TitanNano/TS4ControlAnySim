@@ -7,6 +7,8 @@ import zone  # pylint: disable=import-error
 import sims  # pylint: disable=import-error
 import services  # pylint: disable=import-error
 
+from zone_types import ZoneState  # pylint: disable=import-error
+
 
 class GameEvents:
 
@@ -20,7 +22,16 @@ class GameEvents:
         cls.zone_teardown_handlers.append(handler)
 
     @classmethod
+    def remove_zone_teardown(cls, handler):
+        if handler not in cls.zone_teardown_handlers:
+            return
+
+        cls.zone_teardown_handlers.remove(handler)
+
+    @classmethod
     def emit_zone_teardown(cls, current_zone, client):
+        Logger.log("registered zone teardown handlers: {}".format(len(cls.zone_teardown_handlers)))
+
         for handler in cls.zone_teardown_handlers:
             handler(current_zone, client)
 
@@ -65,11 +76,14 @@ def tn_zone_on_teardown(original, self, client):
 
 @inject_method_to(zone.Zone, 'do_zone_spin_up')
 def tn_zone_do_zone_spin_up(original, self, household_id, active_sim_id):
-    Logger.log('do_zone_spin_up')
     try:
         result = original(self, household_id, active_sim_id)
 
-        GameEvents.emit_zone_spin_up(self, household_id, active_sim_id)
+        def callback():
+            Logger.log('do_zone_spin_up')
+            GameEvents.emit_zone_spin_up(self, household_id, active_sim_id)
+
+        self.register_callback(ZoneState.RUNNING, callback)
 
         return result
     except BaseException:

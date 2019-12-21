@@ -21,8 +21,18 @@ from control_any_sim.services.integrity import IntegrityService
 
 @inject_field_to(SimInfo, 'is_npc', (SetIsNpc))
 def tn_sim_info_is_npc(_original, self):
-    return (services.active_sim_info() != self
-            and services.active_household_id() != self.household_id)
+    if services.active_sim_info() == self:
+        return False
+
+    if services.active_household_id() == self.household_id:
+        selection_group = SelectionGroupService.get(services.active_household_id(), True)
+
+        if not selection_group:
+            return False
+
+        return selection_group.is_household_npc(self)
+
+    return True
 
 
 @inject_property_to(SimInfo, 'is_selectable')
@@ -35,6 +45,20 @@ def tn_sim_info_is_selectable(_original, self):
         return False
 
     return self in client.selectable_sims
+
+
+@inject_property_to(SimInfo, 'is_enabled_in_skewer')
+def canys_sim_info_is_enabled_in_skewer(original, self):
+    try:
+        selection_group = SelectionGroupService.get(services.active_household_id(), True)
+
+        if selection_group and selection_group.is_household_npc(self):
+            return False
+
+        return original(self)
+    except BaseException:
+        Logger.log(traceback.format_exc())
+        return True
 
 
 @inject_property_to(Sim, 'is_selected')

@@ -280,3 +280,115 @@ class SimRemoveRoomMateInteraction(ImmediateSuperInteraction):
 
         except BaseException:
             Logger.log(traceback.format_exc())
+
+
+class SimHouseholdNpcOnInteraction(ImmediateSuperInteraction):
+    @flexmethod
+    def test(cls, inst, *args, target=DEFAULT, context=None, **kwargs) -> TestResult:  # pylint: disable=no-self-argument
+        try:
+            inst_or_cls = inst if inst is not None else cls
+            selection_group = SelectionGroupService.get(services.active_household_id())
+
+            Logger.log("testing SimHouseholdNpcOnInteraction, context: {} {}"
+                       .format(args, kwargs))
+
+            if target:
+                info_target = target.sim_info
+
+            if context.target_sim_id is not None:
+                target_id = context.target_sim_id
+                info_target = services.sim_info_manager().get(target_id)
+
+            Logger.log('info_target: {}'.format(info_target))
+
+            if selection_group.is_household_npc(info_target):
+                return TestResult(False, "sim is already a household npc", inst)
+
+            if info_target.household_id != services.active_household_id():
+                return TestResult(False, "sim is not a member of the active household", inst)
+
+            return (super(SimHouseholdNpcOnInteraction, inst_or_cls)
+                    .test(*args, target=target, context=context, **kwargs))
+        except BaseException:
+            Logger.log(traceback.format_exc())
+
+    def _run_interaction_gen(self, timeline):
+        try:
+            Logger.log("running household npc on interaction...")
+
+            super()._run_interaction_gen(timeline)
+
+            sim_info = self.target.sim_info
+
+            if self.context.target_sim_id is not None:
+                sim_info = (services.sim_info_manager()
+                            .get(self.context.target_sim_id))
+
+            Logger.log("got sim info {} {}"
+                       .format(sim_info.first_name, sim_info.last_name))
+
+            selection_group = SelectionGroupService.get(services.active_household_id())
+            selection_group.add_household_npc(sim_info)
+
+            Logger.log("sim is now a household npc!")
+
+            return True
+
+        except BaseException:
+            Logger.log(traceback.format_exc())
+
+
+class SimHouseholdNpcOffInteraction(ImmediateSuperInteraction):
+    @flexmethod
+    def test(cls, inst, *args, target=DEFAULT, context=None, **kwargs) -> TestResult:  # pylint: disable=no-self-argument
+        try:
+            inst_or_cls = inst if inst is not None else cls
+            selection_group = SelectionGroupService.get(services.active_household_id())
+
+            Logger.log("testing SimHouseholdNpcOffInteraction, context: {} {}"
+                       .format(args, kwargs))
+
+            if target:
+                info_target = target.sim_info
+
+            if context.target_sim_id is not None:
+                target_id = context.target_sim_id
+                info_target = services.sim_info_manager().get(target_id)
+
+            Logger.log('info_target: {}'.format(info_target))
+
+            if not selection_group.is_household_npc(info_target):
+                return TestResult(False, "sim is not a household npc", inst)
+
+            if info_target.household_id != services.active_household_id():
+                return TestResult(False, "sim is not a member of the active household", inst)
+
+            return (super(SimHouseholdNpcOffInteraction, inst_or_cls)
+                    .test(*args, target=target, context=context, **kwargs))
+        except BaseException:
+            Logger.log(traceback.format_exc())
+
+    def _run_interaction_gen(self, timeline):
+        try:
+            Logger.log("running household npc off interaction...")
+
+            super()._run_interaction_gen(timeline)
+
+            sim_info = self.target.sim_info
+
+            if self.context.target_sim_id is not None:
+                sim_info = (services.sim_info_manager()
+                            .get(self.context.target_sim_id))
+
+            Logger.log("got sim info {} {}"
+                       .format(sim_info.first_name, sim_info.last_name))
+
+            selection_group = SelectionGroupService.get(services.active_household_id())
+            selection_group.remove_household_npc(sim_info)
+
+            Logger.log("sim is now a normal household member!")
+
+            return True
+
+        except BaseException:
+            Logger.log(traceback.format_exc())

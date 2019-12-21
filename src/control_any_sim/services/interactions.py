@@ -10,7 +10,9 @@ class InteractionsService:
         16489283597599966859,
         10989771389858450567,
         18214597616328370004,
-        16534221441995016557
+        16534221441995016557,
+        13559468593102065089,
+        12276091593751358701
     )
 
     @classmethod
@@ -23,13 +25,7 @@ class InteractionsService:
         affordance_manager = services.affordance_manager()
         injected_interactions = []
 
-        Logger.log("attempting to inject sim interactions {}"
-                   .format(cls.sim_interactions))
-
         for interaction_id in cls.sim_interactions:
-            Logger.log('injecting interaction to sim {}'
-                       .format(interaction_id))
-
             interaction_class = affordance_manager.get(interaction_id)
 
             if interaction_class is None:
@@ -47,13 +43,7 @@ class InteractionsService:
         affordance_manager = services.affordance_manager()
         injected_interactions = []
 
-        Logger.log("attempting to inject relationship panel interactions {}"
-                   .format(cls.sim_interactions))
-
         for interaction_id in cls.sim_interactions:
-            Logger.log('injecting interaction to relationship panel {}'
-                       .format(interaction_id))
-
             interaction_class = affordance_manager.get(interaction_id)
 
             if interaction_class is None:
