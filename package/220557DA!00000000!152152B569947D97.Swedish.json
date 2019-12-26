@@ -6,27 +6,27 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "Control Sim"
+      "Value": "Kontrollera Sim"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "Don't Control Sim"
+      "Value": "Kontrollera INTE Sim"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+      "Value": "Du kör för närvarande KontrolleraAllaSimmar Version {0.String}, som är en experimentel förhandsversion! Experimentella förhandsversioner är inte avsedda för vanliga spelare, utan för att testa bugg fixar och nya verktyg! Om du inte installerade den här versionen med flit så ska du inte använda den!"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "Quit Game"
+      "Value": "Avsluta Spelet"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "I know what I'm doing"
+      "Value": "Jag vet vad jag gör"
     },
     {
       "Key": "0x915E911B",
-      "Value": "Control Any Sim WARNING"
+      "Value": "Kontrollera Alla Simmar VARNING"
     },
     {
       "Key": "0x083C2912",
@@ -45,7 +45,7 @@
       "Value": "Turn Into Household Member"
     }
   ],
-  "DataLength": "0x000001C8",
+  "DataLength": "0x000001FB",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",
