@@ -6,30 +6,30 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "Control Sim"
+      "Value": "Bestuur Sim"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "Don't Control Sim"
+      "Value": "Bestuur Sim niet"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+      "Value": "Je gebruikt op dit moment ControlAnySim Versie {0.String}. Dit is een experimentele preview-versie! Experimentele versies zijn niet bedoeld voor normale spelers, voor maar het testen van bug fixes en nieuwe features! Als je deze versie niet bewust geïnstalleerd hebt, zou je het niet moeten gebruiken!"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "Quit Game"
+      "Value": "Spel afsluiten"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "I know what I'm doing"
+      "Value": "Ik weet wat ik doe"
     },
     {
       "Key": "0x915E911B",
-      "Value": "Control Any Sim WARNING"
+      "Value": "Bestuur elke Sim WAARSCHUWING"
     },
     {
-      "Key": "0x083C2912",
+      "Key": "0x83C29120",
       "Value": "Add To Roommates"
     },
     {
@@ -45,7 +45,7 @@
       "Value": "Turn Into Household Member"
     }
   ],
-  "DataLength": "0x000001C8",
+  "DataLength": "0x000001E6",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",
