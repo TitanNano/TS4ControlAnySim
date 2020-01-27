@@ -147,6 +147,7 @@ class SelectionGroupService:
                 Logger.log(traceback.format_exc())
 
         self.client.selectable_sims.add_watcher(self, self.update_selectable_sims)
+        self.update_selectable_sims()
         self.zone_is_setup = True
 
     def is_selectable(self, sim_id):
@@ -196,8 +197,13 @@ class SelectionGroupService:
         for sim_info_id in self.selectable_sims:
             sim_info = services.sim_info_manager().get(sim_info_id)
 
+            if sim_info is None:
+                Logger.log("sim with id {} does not exist and shouldn't apear here"
+                           .format(sim_info_id))
+                continue
+
             if sim_info.household_id == self.household_id:
-                return
+                continue
 
             Logger.log("{} is not in household, removing to avoid teardown issues".format(sim_info))
 
