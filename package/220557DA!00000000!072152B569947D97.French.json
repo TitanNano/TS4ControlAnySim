@@ -6,23 +6,23 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "contrôler le sim"
+      "Value": "Contrôler le sim"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "ne pas contrôler le sim"
+      "Value": "Ne pas contrôler le sim"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+      "Value": "La version {0.String} de ControlAnySim est activée et est une version expérimentale!\n\nLes versions expérimentales ne sont pas faites pour les joueurs classiques, mais à des fins de tests de fonctionnalités et de corrections de bugs!\n\nSi vous n'avez pas installé cette version dans ce but, vous devriez ne pas l'utiliser!"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "Quit Game"
+      "Value": "Quitter le jeu"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "I know what I'm doing"
+      "Value": "Je sais ce que je fais"
     },
     {
       "Key": "0x915E911B",
@@ -30,19 +30,19 @@
     },
     {
       "Key": "0x083C2912",
-      "Value": "Add To Roommates"
+      "Value": "Ajouter à la colocation"
     },
     {
       "Key": "0xA7E24CAA",
-      "Value": "Remove From Roommates"
+      "Value": "Retirer de la colocation"
     },
     {
       "Key": "0x284AD579",
-      "Value": "Turn Into Household NPC"
+      "Value": "Transformer en NPC"
     },
     {
       "Key": "0xDECE0085",
-      "Value": "Turn Into Household Member"
+      "Value": "Transformer en sim jouable"
     }
   ],
   "DataLength": "0x000001D5",
