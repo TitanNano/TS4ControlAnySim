@@ -6,43 +6,43 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "可控制此Sim"
+      "Value": "控制模擬市民"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "不可控制此Sim"
+      "Value": "不控制模擬市民"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "您现在使用的是ControlAnySim测试版本{0.String}。这个测试版本主要针对那些想要检测漏洞是否被修复以及测试新功能的玩家所设计。\\n\\n如果您不想进行测试，又不小心安装了此版本，请勿使用。"
+      "Value": "你正在運行 ControlAnySim 版本 {0.String}，這是一個實驗版本！\\n\\n實驗版本是為那些打算測試錯誤的修復和新功能的非一般玩家而設。\\n\\n如果你安裝了這個版本但又不打算進行測試，請勿使用！"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "退出游戏"
+      "Value": "退出遊戲"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "我知道我在做什么"
+      "Value": "我知道我在做甚麼"
     },
     {
       "Key": "0x915E911B",
-      "Value": "Control Any Sim 注意事项"
+      "Value": "Control Any Sim 警告"
     },
     {
       "Key": "0x083C2912",
-      "Value": "Add To Roommates"
+      "Value": "增加室友"
     },
     {
       "Key": "0xA7E24CAA",
-      "Value": "Remove From Roommates"
+      "Value": "移除室友"
     },
     {
       "Key": "0x284AD579",
-      "Value": "Turn Into Household NPC"
+      "Value": "轉變為家庭NPC"
     },
     {
       "Key": "0xDECE0085",
-      "Value": "Turn Into Household Member"
+      "Value": "轉變為家庭成員"
     }
   ],
   "DataLength": "0x000001BD",
