@@ -121,6 +121,9 @@ class SelectionGroupService:
         if sim_info.is_selectable:
             return
 
+        # request lod before adding to make sure everything is loaded
+        sim_info.request_lod(SimInfoLODLevel.ACTIVE)
+
         self.client.add_selectable_sim_info(sim_info)
 
         currently_active_sim = self.client.active_sim_info
