@@ -133,7 +133,9 @@ class SelectionGroupService:
         self.client.set_active_sim_by_id(currently_active_sim.id)
 
     def remove_sim(self, sim_info):
-        self.client.set_next_sim()
+        if sim_info == self.client.active_sim_info:
+            self.client.set_next_sim()
+
         self.client.remove_selectable_sim_by_id(sim_info.id)
 
     def setup_zone(self):
