@@ -1,5 +1,5 @@
 # Control Any Sim
-[![Build Status](https://travis-ci.com/TitanNano/TS4ControlAnySim.svg?branch=master)](https://travis-ci.com/TitanNano/TS4ControlAnySim) [![Version](https://img.shields.io/github/v/release/TitanNano/TS4ControlAnySim?style=plastic)](https://github.com/TitanNano/TS4ControlAnySim/releases/latest) ![TS4 Version](https://img.shields.io/badge/TS4-1.59.73.1220-success)
+[![Build Status](https://travis-ci.com/TitanNano/TS4ControlAnySim.svg?branch=master)](https://travis-ci.com/TitanNano/TS4ControlAnySim) [![Version](https://img.shields.io/github/v/release/TitanNano/TS4ControlAnySim?style=plastic)](https://github.com/TitanNano/TS4ControlAnySim/releases/latest) ![TS4 Version](https://img.shields.io/badge/TS4-1.61.15.1220-success)
 
 This is a mod for The Sims 4 by Maxis which allows the player to control any NPC character while playing.
 
