@@ -1,10 +1,9 @@
 import traceback
-
 import services  # pylint: disable=import-error
 
-import control_any_sim
-
 from sims4 import commands  # pylint: disable=import-error
+
+import control_any_sim
 
 from control_any_sim.services.selection_group import SelectionGroupService
 from control_any_sim.util.logger import Logger
