@@ -1,14 +1,13 @@
 import traceback
 
-from control_any_sim.util.inject import inject_method_to
-from control_any_sim.util.logger import Logger
-
 import zone  # pylint: disable=import-error
 import sims  # pylint: disable=import-error
 import services  # pylint: disable=import-error
 
 from zone_types import ZoneState  # pylint: disable=import-error
 
+from control_any_sim.util.inject import inject_method_to
+from control_any_sim.util.logger import Logger
 
 class GameEvents:
 
