@@ -215,6 +215,9 @@ class SelectionGroupService:
             self.remove_sim(sim_info)
 
     def add_household_npc(self, sim_info):
+        if sim_info == self.client.active_sim_info:
+            self.client.set_next_sim()
+
         self.household_npcs.append(sim_info.id)
         self.client.send_selectable_sims_update()
 
