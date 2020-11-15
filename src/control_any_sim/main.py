@@ -46,15 +46,15 @@ def tn_sim_info_is_selectable(_original, self):
     return self in client.selectable_sims
 
 
-@inject_property_to(SimInfo, 'is_enabled_in_skewer')
-def canys_sim_info_is_enabled_in_skewer(original, self):
+@inject_method_to(SimInfo, 'get_is_enabled_in_skewer')
+def canys_sim_info_get_is_enabled_in_skewer(original, self, consider_active_sim=True):
     try:
         selection_group = SelectionGroupService.get(services.active_household_id(), True)
 
         if selection_group and selection_group.is_household_npc(self):
             return False
 
-        return original(self)
+        return original(self, consider_active_sim)
     except BaseException:
         Logger.log(traceback.format_exc())
         return True
