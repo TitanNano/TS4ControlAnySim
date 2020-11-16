@@ -68,6 +68,7 @@ cd dist/ && zip -r $install_dir/$package_name.ts4script ./control_any_sim
 
 cd ..
 cp package/*.package dist/$install_dir/
+cp LICENSE dist/$install_dir/LICENSE.txt
 
 if [[ $deploy -eq 1 ]]; then
     cd dist/
