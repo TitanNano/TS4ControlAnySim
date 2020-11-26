@@ -6,43 +6,43 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "Control Sim"
+      "Value": "Controlar Sim"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "Don't Control Sim"
+      "Value": "Parar de Controlar Sim"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+      "Value": "Você está utilizando atualmente a versão {0.String} do ControlAnySim, que é uma versão experimental de testes!\\n\\nVersões experimentais não são destinadas ao público geral, sendo voltadas a testes de correções de erros e novos recursos!\\n\\nSe você não instalou esta versão propositalmente, então não deveria utilizá-la!"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "Quit Game"
+      "Value": "Sair do Jogo"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "I know what I'm doing"
+      "Value": "Eu sei o que estou fazendo"
     },
     {
       "Key": "0x915E911B",
-      "Value": "Control Any Sim WARNING"
+      "Value": "ALERTA do Control Any Sim"
     },
     {
       "Key": "0x083C2912",
-      "Value": "Add To Roommates"
+      "Value": "Adicionar como Colega de Quarto"
     },
     {
       "Key": "0xA7E24CAA",
-      "Value": "Remove From Roommates"
+      "Value": "Remover como Colega de Quarto"
     },
     {
       "Key": "0x284AD579",
-      "Value": "Turn Into Household NPC"
+      "Value": "Tornar como NPC do Grupo Familiar"
     },
     {
       "Key": "0xDECE0085",
-      "Value": "Turn Into Household Member"
+      "Value": "Tornar como Membro da Família"
     }
   ],
   "DataLength": "0x000001C8",
