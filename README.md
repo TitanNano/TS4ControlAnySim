@@ -21,7 +21,7 @@ get to be imported into the `package` file.
 
 ## Contributing
 If you'd like to contribute to this project, feel free to do so.
-All changes should be submitted via Pull-Requests. Please make also sure there
+All changes should be submitted via Pull-Requests. Also, please make sure there
 is an issue corresponding to the change you are submitting.
 If you'd like to make a change for something for which there is no issue yet,
 file an issue first and we can discuss new ideas as well as problems and bugs.
