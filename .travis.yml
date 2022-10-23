@@ -1,15 +1,22 @@
 language: python
 python:
-    - "3.6"
     - "3.7"
-    - "3.8"
 
 install:
-    - pip install pylint
+    - |
+        export POETRY_HOME=/opt/poetry
+        python3 -m venv $POETRY_HOME
+        source $POETRY_HOME/bin/activate
+        python -m pip install poetry==1.2.0
+        ls -al $POETRY_HOME/bin
+        $POETRY_HOME/bin/poetry --version
+        export PATH="$POETRY_HOME/bin:$PATH"
+        deactivate
+    - poetry install 
 
 script:
     - "./build.sh"
-    - pylint $(find src/ -name '*.py')
+    - poetry run pylint $(find src/ -name '*.py')
 
 before_deploy:
     - "./build.sh --deploy"
