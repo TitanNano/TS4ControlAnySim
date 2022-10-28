@@ -8,7 +8,7 @@ from distributor.ops import SetIsNpc  # pylint: disable=import-error
 from venues.zone_director_residential import ZoneDirectorResidentialBase  # pylint: disable=import-error
 from objects.components.sim_inventory_component import SimInventoryComponent  # pylint: disable=import-error,E0611
 
-import control_any_sim.cheats  # pylint: disable=unused-import
+import control_any_sim.cheats
 
 from control_any_sim.util.inject import inject_method_to, inject_field_to, inject_property_to
 from control_any_sim.services.selection_group import SelectionGroupService
@@ -24,7 +24,8 @@ def tn_sim_info_is_npc(_original, self):
         return False
 
     if services.active_household_id() == self.household_id:
-        selection_group = SelectionGroupService.get(services.active_household_id(), True)
+        selection_group = SelectionGroupService.get(
+            services.active_household_id(), True)
 
         if not selection_group:
             return False
@@ -49,7 +50,8 @@ def tn_sim_info_is_selectable(_original, self):
 @inject_method_to(SimInfo, 'get_is_enabled_in_skewer')
 def canys_sim_info_get_is_enabled_in_skewer(original, self, consider_active_sim=True):
     try:
-        selection_group = SelectionGroupService.get(services.active_household_id(), True)
+        selection_group = SelectionGroupService.get(
+            services.active_household_id(), True)
 
         if selection_group and selection_group.is_household_npc(self):
             return False

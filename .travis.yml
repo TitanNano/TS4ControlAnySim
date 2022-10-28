@@ -1,17 +1,10 @@
+dist: jammy
 language: python
 python:
-    - "3.7"
+    - "3.7.15"
 
 install:
-    - |
-        export POETRY_HOME=/opt/poetry
-        python3 -m venv $POETRY_HOME
-        source $POETRY_HOME/bin/activate
-        python -m pip install poetry==1.2.0
-        ls -al $POETRY_HOME/bin
-        $POETRY_HOME/bin/poetry --version
-        export PATH="$POETRY_HOME/bin:$PATH"
-        deactivate
+    - pip install poetry
     - poetry install 
 
 script:
@@ -31,4 +24,4 @@ deploy:
     on:
         tags: true
         repo: TitanNano/TS4ControlAnySim
-        python: "3.7"
+        python: "3.7.15"
