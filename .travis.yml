@@ -1,15 +1,15 @@
+dist: jammy
 language: python
 python:
-    - "3.6"
-    - "3.7"
-    - "3.8"
+    - "3.7.15"
 
 install:
-    - pip install pylint
+    - pip install poetry
+    - poetry install 
 
 script:
     - "./build.sh"
-    - pylint $(find src/ -name '*.py')
+    - poetry run pylint $(find src/ -name '*.py')
 
 before_deploy:
     - "./build.sh --deploy"
@@ -24,4 +24,4 @@ deploy:
     on:
         tags: true
         repo: TitanNano/TS4ControlAnySim
-        python: "3.7"
+        python: "3.7.15"
