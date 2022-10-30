@@ -17,6 +17,7 @@ class InteractionsService:
 
     @classmethod
     def bootstrap(cls):
+        Logger.log("bootstrapping interactions service...")
         GameEvents.on_add_sim(cls.inject_into_sim)
         GameEvents.on_add_sim(cls.inject_into_relationship_panel)
 

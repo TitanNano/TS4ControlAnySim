@@ -11,6 +11,7 @@ from control_any_sim.util.serialize import serialize
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
 
+
 def get_home_dir():
     dir_name = path.dirname(path.abspath(__file__))
     home_dir = path.normpath(path.join(dir_name, '../../../'))
@@ -51,11 +52,11 @@ class SelectionGroupService:
         if cls.instance is not None:
             return cls.instance
 
-        Logger.log("selection group: no instance, {}".format(household_id))
+        Logger.log(f"selection group: no instance, {household_id}")
 
         # restore state
         try:
-            file_handler = open(HOME_DIR + '/selection_group.json')
+            file_handler = open(HOME_DIR + '/selection_group.json', encoding="utf8")
         except BaseException:
             file_handler = None
 
@@ -65,7 +66,7 @@ class SelectionGroupService:
         state = file_handler.read()
         file_handler.close()
 
-        Logger.log('restored state: {}'.format(state))
+        Logger.log(f'restored state: {state}')
 
         # deserialize
         instance = cls.deserialize(state)  # pylint: disable=no-member
@@ -93,7 +94,7 @@ class SelectionGroupService:
     def persist_state(self):
         data = self.serialize()  # pylint: disable=no-member
 
-        file_handler = open(path.join(HOME_DIR, 'selection_group.json'), 'w')
+        file_handler = open(path.join(HOME_DIR, 'selection_group.json'), 'w', encoding="utf8")
         file_handler.write(data)
         file_handler.close()
 
@@ -148,8 +149,8 @@ class SelectionGroupService:
 
                 self.make_sim_selectable(sim_info)
             except BaseException:
-                Logger.log("Error while adding sim to skewer: {}".format(sim_info_id))
-                Logger.log(traceback.format_exc())
+                Logger.error(f"failed to add sim to skewer: {sim_info_id}")
+                Logger.error(traceback.format_exc())
 
         self.client.selectable_sims.add_watcher(self, self.update_selectable_sims)
         self.update_selectable_sims()
@@ -158,7 +159,7 @@ class SelectionGroupService:
     def is_selectable(self, sim_id):
         test = sim_id in self.selectable_sims
 
-        Logger.log("is sim {} in selectable list: {}".format(sim_id, test))
+        Logger.log(f"is sim {sim_id} in selectable list: {test}")
 
         return test
 
@@ -180,7 +181,7 @@ class SelectionGroupService:
         try:
             sim_info.request_lod(SimInfoLODLevel.ACTIVE)
 
-            Logger.log("sim {} lod is now: {}".format(sim_info, sim_info.lod))
+            Logger.log(f"sim {sim_info} lod is now: {sim_info.lod}")
 
             sim_info.away_action_tracker.refresh(on_travel_away=True)
             sim_info.relationship_tracker.clean_and_send_remaining_relationship_info()
@@ -192,25 +193,24 @@ class SelectionGroupService:
                 inventory = sim_instance.get_component(INVENTORY_COMPONENT)
                 inventory.publish_inventory_items()
             else:
-                Logger.log('there is no sim instance for {}'.format(sim_info))
+                Logger.log(f'there is no sim instance for {sim_info}')
 
         except BaseException:
-            Logger.log("Error while updating newly active sim: {}".format(sim_info))
-            Logger.log(traceback.format_exc())
+            Logger.error(f"updating newly active sim: {sim_info}")
+            Logger.error(traceback.format_exc())
 
     def cleanup_sims(self):
         for sim_info_id in self.selectable_sims:
             sim_info = services.sim_info_manager().get(sim_info_id)
 
             if sim_info is None:
-                Logger.log("sim with id {} does not exist and shouldn't apear here"
-                           .format(sim_info_id))
+                Logger.log(f"sim with id {sim_info_id} does not exist and shouldn't apear here")
                 continue
 
             if sim_info.household_id == self.household_id:
                 continue
 
-            Logger.log("{} is not in household, removing to avoid teardown issues".format(sim_info))
+            Logger.log(f"{sim_info} is not in household, removing to avoid teardown issues")
 
             self.remove_sim(sim_info)
 
