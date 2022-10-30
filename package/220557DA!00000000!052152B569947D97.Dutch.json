@@ -14,7 +14,7 @@
     },
     {
       "Key": "0x098A53E9",
-      "Value": "Je gebruikt op dit moment ControlAnySim Versie {0.String}. Dit is een experimentele preview-versie! Experimentele versies zijn niet bedoeld voor normale spelers, voor maar het testen van bug fixes en nieuwe features! Als je deze versie niet bewust geïnstalleerd hebt, zou je het niet moeten gebruiken!"
+      "Value": "Je gebruikt op dit moment ControlAnySim Versie {0.String}. Dit is een experimentele preview-versie!\\n\\nExperimentele versies zijn niet bedoeld voor normale spelers, voor maar het testen van bug fixes en nieuwe features!\\n\\nAls je deze versie niet bewust geïnstalleerd hebt, zou je het niet moeten gebruiken!"
     },
     {
       "Key": "0x39BA3179",
@@ -45,7 +45,7 @@
       "Value": "Turn Into Household Member"
     }
   ],
-  "DataLength": "0x000001E6",
+  "DataLength": "0x000001F0",
   "Key": {
     "Type": "0x220557DA",
     "Group": "0x00000000",
