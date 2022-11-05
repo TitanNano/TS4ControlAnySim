@@ -57,24 +57,25 @@ class SelectionGroupService:
         # restore state
         try:
             file_handler = open(HOME_DIR + '/selection_group.json', encoding="utf8")
+            state = file_handler.read()
+            file_handler.close()
+            Logger.log(f'restored state: {state}')
         except BaseException:
-            file_handler = None
+            state = None
 
-        if file_handler is None or not file_handler.readable():
+        if state is None:
             return cls(household_id)
-
-        state = file_handler.read()
-        file_handler.close()
-
-        Logger.log(f'restored state: {state}')
 
         # deserialize
-        instance = cls.deserialize(state)  # pylint: disable=no-member
+        try:
+            instance = cls.deserialize(state)  # pylint: disable=no-member
 
-        if instance.household_id != household_id:
+            if instance.household_id != household_id:
+                return cls(household_id)
+
+            return instance
+        except BaseException:
             return cls(household_id)
-
-        return instance
 
     @property
     def client(self):
