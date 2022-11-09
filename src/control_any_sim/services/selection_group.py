@@ -4,8 +4,10 @@ import traceback
 import services  # pylint: disable=import-error
 
 from sims.sim_info_lod import SimInfoLODLevel  # pylint: disable=import-error
+from sims.sim_info import SimInfo  # pylint: disable=import-error
 from objects import ALL_HIDDEN_REASONS  # pylint: disable=import-error,E0611
 from objects.components.types import INVENTORY_COMPONENT  # pylint: disable=import-error,E0611
+from server.client import Client  # pylint: disable=import-error,E0611
 
 from control_any_sim.util.serialize import serialize
 from control_any_sim.util.game_events import GameEvents
@@ -78,7 +80,7 @@ class SelectionGroupService:
             return cls(household_id)
 
     @property
-    def client(self):
+    def client(self) -> Client:
         return services.get_first_client()
 
     def __init__(self, household_id, selectable_sims=None, zone_is_setup=None, household_npcs=None):  # pylint: disable=unused-argument
@@ -119,7 +121,7 @@ class SelectionGroupService:
         self.zone_is_setup = False
         self.__class__.instance = None
 
-    def make_sim_selectable(self, sim_info):
+    def make_sim_selectable(self, sim_info: SimInfo):
         if sim_info.is_selectable:
             return
 
@@ -128,7 +130,7 @@ class SelectionGroupService:
 
         self.client.add_selectable_sim_info(sim_info)
 
-        currently_active_sim = self.client.active_sim_info
+        currently_active_sim: SimInfo = self.client.active_sim_info
 
         # force the game to update now selectable NPC tracker information
         self.client.set_active_sim_by_id(sim_info.id)
@@ -170,7 +172,7 @@ class SelectionGroupService:
             Logger.log("active sim changed but we have no client, yet?")
             return
 
-        sim_info = self.client.active_sim_info
+        sim_info: SimInfo = self.client.active_sim_info
 
         if sim_info is None:
             Logger.log("sim selection changed but no sim is selected")
@@ -182,9 +184,12 @@ class SelectionGroupService:
         try:
             sim_info.request_lod(SimInfoLODLevel.ACTIVE)
 
-            Logger.log(f"sim {sim_info} lod is now: {sim_info.lod}")
+            Logger.log(f"sim {sim_info!r} lod is now: {sim_info.lod}")
 
-            sim_info.away_action_tracker.refresh(on_travel_away=True)
+            if sim_info.zone_id > 0:
+                Logger.log(f"Sim zone id is set: {sim_info.zone_id!r}")
+                sim_info.away_action_tracker.refresh(on_travel_away=True)
+
             sim_info.relationship_tracker.clean_and_send_remaining_relationship_info()
             sim_info.publish_all_commodities()
 
@@ -194,10 +199,10 @@ class SelectionGroupService:
                 inventory = sim_instance.get_component(INVENTORY_COMPONENT)
                 inventory.publish_inventory_items()
             else:
-                Logger.log(f'there is no sim instance for {sim_info}')
+                Logger.log(f'there is no sim instance for {sim_info!r}')
 
         except BaseException:
-            Logger.error(f"updating newly active sim: {sim_info}")
+            Logger.error(f"updating newly active sim: {sim_info!r}")
             Logger.error(traceback.format_exc())
 
     def cleanup_sims(self):
