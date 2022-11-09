@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "control-any-sim"
-version = "1.2.2"
+version = "1.2.3"
 description = "This is a mod for The Sims 4 by Maxis which allows the player to control any NPC character while playing."
 authors = ["Jovan Gerodetti <jovan.gerodetti@titannano.de>"]
 license = "Apache-2.0"
