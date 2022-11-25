@@ -1,0 +1,39 @@
+name: Release
+
+on:
+  push:
+    tags: v*
+
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Git Tag'
+        required: true
+        type: string
+
+jobs:
+  build:
+    uses: ./.github/workflows/build.yaml
+    with:
+      release: true
+
+  create-release:
+    needs: build
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: download all artifacts
+        uses: actions/download-artifact@v3
+        with:
+          path: artifacts/
+      - name: new release
+        uses: ncipollo/release-action@v1
+        id: create_release
+        with:
+          draft: true
+          prerelease: false
+          artifacts: artifacts/*.zip
+          generateReleaseNotes: true
+          tag: ${{ inputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

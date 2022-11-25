@@ -1,0 +1,41 @@
+name: Build Project
+
+on:
+  workflow_call:
+    inputs:
+      release:
+        type: boolean
+        default: false
+        required: false
+      tag:
+        type: string
+        required: false
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: checkout
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ inputs.tag }}
+        fetch-depth: 0
+        
+    - uses: actions/setup-python@v4
+      with:
+        python-version: '3.7'
+    - name: Setup Poetry
+      uses: Gr1N/setup-poetry@v7
+    - name: Setup Cache
+      uses: allanchain/poetry-cache-action@v0.2.2
+      with:
+        cache-key-prefix: build
+        ensure-module: pylint
+    - name: Build
+      run: ./build.sh --deploy
+    - name: Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+          name: control-any-sim
+          path: dist/ControlAnySim.zip
