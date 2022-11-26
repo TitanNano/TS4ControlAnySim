@@ -32,7 +32,7 @@ jobs:
         with:
           draft: true
           prerelease: false
-          artifacts: artifacts/*.zip
+          artifacts: artifacts/**/*.zip
           generateReleaseNotes: true
           tag: ${{ inputs.tag }}
         env:
