@@ -16,6 +16,7 @@ jobs:
     uses: ./.github/workflows/build.yaml
     with:
       release: true
+      tag: ${{ inputs.tag }}
 
   create-release:
     needs: build
