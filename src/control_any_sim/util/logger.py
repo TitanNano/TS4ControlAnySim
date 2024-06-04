@@ -3,9 +3,9 @@ from os import path
 
 def get_logfile_name():
     dir_name = path.dirname(path.abspath(__file__))
-    log_dir = path.normpath(path.join(dir_name, '../../../'))
+    log_dir = path.normpath(path.join(dir_name, "../../../"))
 
-    return path.join(log_dir, 'debug.log')
+    return path.join(log_dir, "debug.log")
 
 
 class Logger:
@@ -18,10 +18,10 @@ class Logger:
         if cls.PRODUCTION:
             return
 
-        cls.handler.write(message + '\n')
+        cls.handler.write(message + "\n")
         cls.handler.flush()
 
     @classmethod
     def error(cls, message):
-        cls.handler.write('ERROR: ' + message + '\n')
+        cls.handler.write("ERROR: " + message + "\n")
         cls.handler.flush()

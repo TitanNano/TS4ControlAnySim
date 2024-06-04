@@ -19,16 +19,20 @@ class UiRequest(UiDialogResponse.UiDialogUiRequest):
     pass
 
 
-def create_dialog_response(button_type=ButtonType.DIALOG_RESPONSE_CLOSED, text="",
-                           ui_request=UiRequest.NO_REQUEST):
-
-    return UiDialogResponse(dialog_response_id=(button_type), text=(text), ui_request=(ui_request))
+def create_dialog_response(
+    button_type=ButtonType.DIALOG_RESPONSE_CLOSED,
+    text="",
+    ui_request=UiRequest.NO_REQUEST,
+):
+    return UiDialogResponse(
+        dialog_response_id=(button_type), text=(text), ui_request=(ui_request)
+    )
 
 
 class UiDialogQuitIgnore(UiDialogOk):
     FACTORY_TUNABLES = {
-        'cancel_text': get_string("0x688D35BF"),
-        'ok_text': get_string("0x39BA3179")
+        "cancel_text": get_string("0x688D35BF"),
+        "ok_text": get_string("0x39BA3179"),
     }
 
     @property
@@ -37,10 +41,10 @@ class UiDialogQuitIgnore(UiDialogOk):
             create_dialog_response(
                 button_type=ButtonType.DIALOG_RESPONSE_OK,
                 text=self.ok_text,
-                ui_request=UiRequest.TRANSITION_TO_MAIN_MENU_NO_SAVE
+                ui_request=UiRequest.TRANSITION_TO_MAIN_MENU_NO_SAVE,
             ),
             create_dialog_response(
                 button_type=ButtonType.DIALOG_RESPONSE_CANCEL,
                 text=self.cancel_text,
-            )
+            ),
         )

@@ -10,7 +10,11 @@ from objects.components.sim_inventory_component import SimInventoryComponent  # 
 
 import control_any_sim.cheats
 
-from control_any_sim.util.inject import inject_method_to, inject_field_to, inject_property_to
+from control_any_sim.util.inject import (
+    inject_method_to,
+    inject_field_to,
+    inject_property_to,
+)
 from control_any_sim.services.selection_group import SelectionGroupService
 from control_any_sim.services.interactions import InteractionsService
 from control_any_sim.util.game_events import GameEvents
@@ -18,7 +22,7 @@ from control_any_sim.util.logger import Logger
 from control_any_sim.services.integrity import IntegrityService
 
 
-@inject_field_to(SimInfo, 'is_npc', (SetIsNpc))
+@inject_field_to(SimInfo, "is_npc", (SetIsNpc))
 def canys_sim_info_is_npc(original, self):
     try:
         if services.active_sim_info() == self:
@@ -26,7 +30,8 @@ def canys_sim_info_is_npc(original, self):
 
         if services.active_household_id() == self.household_id:
             selection_group = SelectionGroupService.get(
-                services.active_household_id(), True)
+                services.active_household_id(), True
+            )
 
             if not selection_group:
                 return False
@@ -39,12 +44,13 @@ def canys_sim_info_is_npc(original, self):
         return original(self)
 
 
-@inject_property_to(SimInfo, 'is_selectable')
+@inject_property_to(SimInfo, "is_selectable")
 def canys_sim_info_is_selectable(original, self):
     try:
         active_household_id = services.active_household_id()
-        client = (services.client_manager()
-                  .get_client_by_household_id(active_household_id))
+        client = services.client_manager().get_client_by_household_id(
+            active_household_id
+        )
 
         if client is None:
             return False
@@ -55,11 +61,12 @@ def canys_sim_info_is_selectable(original, self):
         return original(self)
 
 
-@inject_method_to(SimInfo, 'get_is_enabled_in_skewer')
+@inject_method_to(SimInfo, "get_is_enabled_in_skewer")
 def canys_sim_info_get_is_enabled_in_skewer(original, self, consider_active_sim=True):
     try:
         selection_group = SelectionGroupService.get(
-            services.active_household_id(), True)
+            services.active_household_id(), True
+        )
 
         if selection_group and selection_group.is_household_npc(self):
             return False
@@ -70,12 +77,13 @@ def canys_sim_info_get_is_enabled_in_skewer(original, self, consider_active_sim=
         return True
 
 
-@inject_property_to(Sim, 'is_selected')
+@inject_property_to(Sim, "is_selected")
 def canys_sim_info_is_selected(original, self):
     try:
         active_household_id = services.active_household_id()
-        client = (services.client_manager()
-                  .get_client_by_household_id(active_household_id))
+        client = services.client_manager().get_client_by_household_id(
+            active_household_id
+        )
 
         if client is not None:
             return self is client.active_sim
@@ -94,9 +102,8 @@ def canys_init_services(_zone, household_id, _active_sim_id):
 InteractionsService.bootstrap()
 
 
-@inject_method_to(ZoneDirectorResidentialBase, '_is_any_sim_always_greeted')
-def canys_zone_director_residential_base_is_any_sim_always_greeted(original,
-                                                                   self):
+@inject_method_to(ZoneDirectorResidentialBase, "_is_any_sim_always_greeted")
+def canys_zone_director_residential_base_is_any_sim_always_greeted(original, self):
     try:
         active_lot_household = services.current_zone().get_active_lot_owner_household()
         selection_group = SelectionGroupService.get(services.active_household_id())
@@ -116,7 +123,7 @@ def canys_zone_director_residential_base_is_any_sim_always_greeted(original,
         return original(self)
 
 
-@inject_method_to(SimInventoryComponent, 'allow_ui')
+@inject_method_to(SimInventoryComponent, "allow_ui")
 def tn_sim_inventory_component_allow_ui(original, self):
     try:
         if self.owner.is_selected:
@@ -133,4 +140,4 @@ def canys_validate_version(_zone):
     IntegrityService.check_integrety(control_any_sim.__version__)
 
 
-Logger.log('starting control_any_sim')
+Logger.log("starting control_any_sim")

@@ -17,8 +17,9 @@ def inject_method_to(target_object, target_function_name):
     def _inject_to(new_function):
         target_function = getattr(target_object, target_function_name)
 
-        setattr(target_object, target_function_name,
-                inject(target_function, new_function))
+        setattr(
+            target_object, target_function_name, inject(target_function, new_function)
+        )
 
         return new_function
 
