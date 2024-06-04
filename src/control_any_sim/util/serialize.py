@@ -38,10 +38,7 @@ def object_to_dict(obj):
     """
 
     #  Populate the dictionary with object meta data
-    obj_dict = {
-        "__class__": obj.__class__.__name__,
-        "__module__": obj.__module__
-    }
+    obj_dict = {"__class__": obj.__class__.__name__, "__module__": obj.__module__}
 
     #  Populate the dictionary with object properties
     obj_dict.update(obj.__dict__)
@@ -62,7 +59,7 @@ def deserialize_object(_cls, data):
 
 
 def serialize(new_class):
-    setattr(new_class, 'serialize', serialize_object)
-    setattr(new_class, 'deserialize', classmethod(deserialize_object))
+    setattr(new_class, "serialize", serialize_object)
+    setattr(new_class, "deserialize", classmethod(deserialize_object))
 
     return new_class

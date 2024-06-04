@@ -22,4 +22,5 @@ jobs:
         run: rye sync
       - name: lint
         run: rye run ruff check src/
-      
+      - name: format
+        run: rye run ruff format --check src/

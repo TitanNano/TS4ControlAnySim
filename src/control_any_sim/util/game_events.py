@@ -11,7 +11,6 @@ from control_any_sim.util.logger import Logger
 
 
 class GameEvents:
-
     zone_teardown_handlers = list()
     zone_spin_up_handlers = list()
     add_sim_handlers = list()
@@ -30,7 +29,11 @@ class GameEvents:
 
     @classmethod
     def emit_zone_teardown(cls, current_zone, client):
-        Logger.log("registered zone teardown handlers: {}".format(len(cls.zone_teardown_handlers)))
+        Logger.log(
+            "registered zone teardown handlers: {}".format(
+                len(cls.zone_teardown_handlers)
+            )
+        )
 
         for handler in cls.zone_teardown_handlers:
             handler(current_zone, client)
@@ -67,7 +70,7 @@ class GameEvents:
             handler(current_zone)
 
 
-@inject_method_to(zone.Zone, 'on_teardown')
+@inject_method_to(zone.Zone, "on_teardown")
 def canys_zone_on_teardown(original, self, client):
     try:
         Logger.log("Zone.on_teardown event occurred")
@@ -78,14 +81,14 @@ def canys_zone_on_teardown(original, self, client):
     return original(self, client)
 
 
-@inject_method_to(zone.Zone, 'do_zone_spin_up')
+@inject_method_to(zone.Zone, "do_zone_spin_up")
 def canys_zone_do_zone_spin_up(original, self, household_id, active_sim_id):
     try:
         result = original(self, household_id, active_sim_id)
 
         def callback():
             try:
-                Logger.log('zone_spin_up event occurred')
+                Logger.log("zone_spin_up event occurred")
                 GameEvents.emit_zone_spin_up(self, household_id, active_sim_id)
             except BaseException:
                 Logger.error(traceback.format_exc())
@@ -97,10 +100,10 @@ def canys_zone_do_zone_spin_up(original, self, household_id, active_sim_id):
         Logger.error(traceback.format_exc())
 
 
-@inject_method_to(sims.sim.Sim, 'on_add')
+@inject_method_to(sims.sim.Sim, "on_add")
 def canys_sim_on_add(original, self):
     try:
-        Logger.log('Sim.on_add event occurred')
+        Logger.log("Sim.on_add event occurred")
         result = original(self)
 
         GameEvents.emit_add_sim(self)
@@ -110,10 +113,10 @@ def canys_sim_on_add(original, self):
         Logger.error(traceback.format_exc())
 
 
-@inject_method_to(zone.Zone, 'on_loading_screen_animation_finished')
+@inject_method_to(zone.Zone, "on_loading_screen_animation_finished")
 def canys_zone_on_loading_screen_animation_finished(original, self):
     try:
-        Logger.log('Zone.on_loading_screen_animation_finished event occurred')
+        Logger.log("Zone.on_loading_screen_animation_finished event occurred")
         GameEvents.emit_loading_screen_animation_finished(self)
     except BaseException:
         Logger.error(traceback.format_exc())
