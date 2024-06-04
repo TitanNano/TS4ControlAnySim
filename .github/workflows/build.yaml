@@ -21,17 +21,10 @@ jobs:
       with:
         ref: ${{ inputs.tag }}
         fetch-depth: 0
-        
-    - uses: actions/setup-python@v4
-      with:
-        python-version: '3.7'
-    - name: Setup Poetry
-      uses: Gr1N/setup-poetry@v7
-    - name: Setup Cache
-      uses: allanchain/poetry-cache-action@v0.2.2
-      with:
-        cache-key-prefix: build
-        ensure-module: pylint
+    - name: Setup Rye
+      uses: eifinger/setup-rye@v3
+    - name: Install Dependencies
+      run: rye sync
     - name: Build
       run: ./build.sh --deploy
     - name: Artifacts

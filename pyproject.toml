@@ -1,21 +1,21 @@
-[tool.poetry]
+[project]
 name = "control-any-sim"
 version = "1.2.4"
 description = "This is a mod for The Sims 4 by Maxis which allows the player to control any NPC character while playing."
-authors = ["Jovan Gerodetti <jovan.gerodetti@titannano.de>"]
-license = "Apache-2.0"
+license = { file = "LICENSE" }
 readme = "README.md"
+requires-python = ">= 3.7"
 
-[tool.poetry.dependencies]
-python = "~3.7.2"
+[[authors]]
+name = "Jovan Gerodetti"
+email = "jovan.gerodetti@titannano.de>"
 
-[tool.poetry.group.dev.dependencies]
-decompyle3 = "^3.9.0"
-pylint = "~2.6.0"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.rye]
+dev-dependencies = [
+    "ruff~=0.4.7",
+    "decompyle3~=3.9.1",
+    "pylint~=2.6.0",
+]
 
 [tool.pylint.MESSAGES]
 disable="missing-docstring,broad-except,protected-access,R0903"
