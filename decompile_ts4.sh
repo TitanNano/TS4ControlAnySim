@@ -34,4 +34,32 @@ do
     fi
 done
 
+while [[ $(jobs -r | wc -l) -gt 0 ]]; do
+    wait -fn
+    files_done=$((files_done+1))
+    progress $(($files_done*100/$files_total))
+done
+
 echo ""
+
+echo "linking sims 4 modules..."
+
+bundles=$(ls "$script_dir/ts4")
+
+for bundle in $bundles
+do
+    bundle_dir="$script_dir/ts4/$bundle"
+    modules=$(ls "$bundle_dir")
+
+    for module in $modules
+    do
+        path="$bundle_dir/$module"
+        link="$script_dir/.venv/lib/python3.7/site-packages/$module"
+
+        echo "$path -> $link"
+
+        rm -rf "$link"
+        relative_path=$(realpath --relative-to "$(dirname $link)" "$path")
+        ln -s "$relative_path" "$link"
+    done
+done
