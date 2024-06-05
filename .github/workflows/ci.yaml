@@ -10,17 +10,53 @@ jobs:
   build:
     uses: ./.github/workflows/build.yaml
 
-  ruff:
+  ruff-lint:
     runs-on: 'ubuntu-20.04'
 
     steps:
       - name: checkout
-        uses: actions/checkout@v3
-      - name: Setup Rye
+        uses: actions/checkout@v4
+      - name: setup rye
         uses: eifinger/setup-rye@v3
-      - name: Install Dependencies
+      - name: install dependencies
         run: rye sync
       - name: lint
         run: rye run ruff check src/
+      - name: auto fix
+        if: ${{ failure() }}
+        run: rye run ruff check --fix src/
+      - name: suggest changes
+        if: ${{ failure() }}
+        uses: parkerbxyz/suggest-changes@v1.0.4
+
+  ruff-format:
+    runs-on: 'ubuntu-20.04'
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: setup rye
+        uses: eifinger/setup-rye@v3
+      - name: install dependencies
+        run: rye sync
       - name: format
         run: rye run ruff format --check src/
+      - name: auto fix
+        if: ${{ failure() }}
+        run: rye run ruff format src/
+      - name: suggest changes
+        if: ${{ failure() }}
+        uses: parkerbxyz/suggest-changes@v1.0.4
+
+  mypy:
+    runs-on: 'ubuntu-20.04'
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: setup rye
+        uses: eifinger/setup-rye@v3
+      - name: install dependencies
+        run: rye sync
+      - name: type check
+        run: rye run mypy --disable-error-code "import" src/

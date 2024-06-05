@@ -15,7 +15,20 @@ dev-dependencies = [
     "ruff~=0.4.7",
     "decompyle3~=3.9.1",
     "pylint~=2.6.0",
+    "python-lsp-server[rope]~=1.7.4",
+    "pylsp-mypy~=0.6.7",
 ]
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = ["E501", "BLE001", "TRY300", "D203", "D212"]
+
+[tool.pylsp-mypy]
+enabled = true
+report_progress = true
+dmypy = false
+overrides = ["--disable-error-code", "import", true]
+
 
 [tool.pylint.MESSAGES]
 disable="missing-docstring,broad-except,protected-access,R0903"

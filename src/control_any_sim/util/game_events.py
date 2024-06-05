@@ -1,77 +1,119 @@
+"""Provides a global event bus with game events."""
+
+from __future__ import annotations
+
 import traceback
+from typing import Any, Callable, ClassVar, TypeVar
 
-import zone  # pylint: disable=import-error
-import sims  # pylint: disable=import-error
-import services  # pylint: disable=import-error
-
-from zone_types import ZoneState  # pylint: disable=import-error
+import services
+from server.client import Client
+from sims.sim import Sim
+from typing_extensions import TypeAlias
+from zone import Zone
+from zone_types import ZoneState
 
 from control_any_sim.util.inject import inject_method_to
 from control_any_sim.util.logger import Logger
 
 
 class GameEvents:
-    zone_teardown_handlers = list()
-    zone_spin_up_handlers = list()
-    add_sim_handlers = list()
-    loading_screen_animation_finished_handlers = list()
+    """Game event bus to listen to events in the game."""
+
+    OnZoneTeardown: TypeAlias = Callable[[Zone, Client], None]
+    OnZoneSpinUp: TypeAlias = Callable[[Zone, int, int], None]
+    OnAddSim: TypeAlias = Callable[[Sim], None]
+    OnLoadingScreenAnimationFinished: TypeAlias = Callable[[Zone], None]
+    OnActiveSimChanged: TypeAlias = Callable[[Sim, Sim], None]
+
+    C = TypeVar("C", bound="GameEvents")
+
+    zone_teardown_handlers: ClassVar[list[OnZoneTeardown]] = []
+    zone_spin_up_handlers: ClassVar[list[OnZoneSpinUp]] = []
+    add_sim_handlers: ClassVar[list[OnAddSim]] = []
+    loading_screen_animation_finished_handlers: ClassVar[
+        list[OnLoadingScreenAnimationFinished]
+    ] = []
 
     @classmethod
-    def on_zone_teardown(cls, handler):
+    def on_zone_teardown(cls: type[C], handler: OnZoneTeardown) -> None:
+        """Add a listener for the zone_teardown event."""
         cls.zone_teardown_handlers.append(handler)
 
     @classmethod
-    def remove_zone_teardown(cls, handler):
+    def remove_zone_teardown(cls: type[C], handler: OnZoneTeardown) -> None:
+        """Remove a listener for the zone_teardown event."""
         if handler not in cls.zone_teardown_handlers:
             return
 
         cls.zone_teardown_handlers.remove(handler)
 
     @classmethod
-    def emit_zone_teardown(cls, current_zone, client):
+    def emit_zone_teardown(cls: type[C], current_zone: Zone, client: Client) -> None:
+        """Emit a zone teardown event."""
         Logger.log(
-            "registered zone teardown handlers: {}".format(
-                len(cls.zone_teardown_handlers)
-            )
+            f"registered zone teardown handlers: {len(cls.zone_teardown_handlers)}",
         )
 
         for handler in cls.zone_teardown_handlers:
             handler(current_zone, client)
 
     @classmethod
-    def on_zone_spin_up(cls, handler):
+    def on_zone_spin_up(cls: type[C], handler: OnZoneSpinUp) -> None:
+        """Add a listener for the zone_spin_up event."""
         cls.zone_spin_up_handlers.append(handler)
 
     @classmethod
-    def emit_zone_spin_up(cls, current_zone, household_id, active_sim_id):
+    def emit_zone_spin_up(
+        cls: type[C],
+        current_zone: Zone,
+        household_id: int,
+        active_sim_id: int,
+    ) -> None:
+        """Emit a zone spin up event."""
         for handler in cls.zone_spin_up_handlers:
             handler(current_zone, household_id, active_sim_id)
 
     @classmethod
-    def on_add_sim(cls, handler):
+    def on_add_sim(cls: type[C], handler: OnAddSim) -> None:
+        """Add a listener for the add_sim event."""
         cls.add_sim_handlers.append(handler)
 
     @classmethod
-    def emit_add_sim(cls, sim):
+    def emit_add_sim(cls: type[C], sim: Sim) -> None:
+        """Emit the add sim event."""
         for handler in cls.add_sim_handlers:
             handler(sim)
 
-    @classmethod
-    def on_active_sim_changed(cls, handler):
+    @staticmethod
+    def on_active_sim_changed(handler: OnActiveSimChanged) -> None:
+        """Add a listener for the active_sim_changed event."""
         services.get_first_client().register_active_sim_changed(handler)
 
     @classmethod
-    def on_loading_screen_animation_finished(cls, handler):
+    def on_loading_screen_animation_finished(
+        cls: type[C],
+        handler: OnLoadingScreenAnimationFinished,
+    ) -> None:
+        """Add a listener for the loading_screen_animation_finished event."""
         cls.loading_screen_animation_finished_handlers.append(handler)
 
     @classmethod
-    def emit_loading_screen_animation_finished(cls, current_zone):
+    def emit_loading_screen_animation_finished(
+        cls: type[C],
+        current_zone: Zone,
+    ) -> None:
+        """Emit the loading screen finished event."""
         for handler in cls.loading_screen_animation_finished_handlers:
             handler(current_zone)
 
 
-@inject_method_to(zone.Zone, "on_teardown")
-def canys_zone_on_teardown(original, self, client):
+@inject_method_to(Zone, "on_teardown")
+def canys_zone_on_teardown(
+    original: Callable[[Zone, Client], Any],
+    self: Zone,
+    client: Client,
+) -> Any:  # noqa: ANN401
+    """Wrap around the Zone::on_teardown method to emit the coresponding event."""
     try:
         Logger.log("Zone.on_teardown event occurred")
         GameEvents.emit_zone_teardown(self, client)
@@ -81,12 +123,18 @@ def canys_zone_on_teardown(original, self, client):
     return original(self, client)
 
 
-@inject_method_to(zone.Zone, "do_zone_spin_up")
-def canys_zone_do_zone_spin_up(original, self, household_id, active_sim_id):
+@inject_method_to(Zone, "do_zone_spin_up")
+def canys_zone_do_zone_spin_up(
+    original: Callable[[Zone, int, int], None],
+    self: Zone,
+    household_id: int,
+    active_sim_id: int,
+) -> None:
+    """Wrap the Zone::do_zone_spin_up method to emit the corresponding event."""
     try:
         result = original(self, household_id, active_sim_id)
 
-        def callback():
+        def callback() -> None:
             try:
                 Logger.log("zone_spin_up event occurred")
                 GameEvents.emit_zone_spin_up(self, household_id, active_sim_id)
@@ -100,8 +148,9 @@ def canys_zone_do_zone_spin_up(original, self, household_id, active_sim_id):
         Logger.error(traceback.format_exc())
 
 
-@inject_method_to(sims.sim.Sim, "on_add")
-def canys_sim_on_add(original, self):
+@inject_method_to(Sim, "on_add")
+def canys_sim_on_add(original: Callable[[Sim], None], self: Sim) -> None:
+    """Wrap the Sim::on_add method to emit the corresponding event."""
     try:
         Logger.log("Sim.on_add event occurred")
         result = original(self)
@@ -113,8 +162,12 @@ def canys_sim_on_add(original, self):
         Logger.error(traceback.format_exc())
 
 
-@inject_method_to(zone.Zone, "on_loading_screen_animation_finished")
-def canys_zone_on_loading_screen_animation_finished(original, self):
+@inject_method_to(Zone, "on_loading_screen_animation_finished")
+def canys_zone_on_loading_screen_animation_finished(
+    original: Callable[[Zone], None],
+    self: Zone,
+) -> None:
+    """Wrap around Zone::on_loading_screen_animation_finished to emit corresponding event."""
     try:
         Logger.log("Zone.on_loading_screen_animation_finished event occurred")
         GameEvents.emit_loading_screen_animation_finished(self)

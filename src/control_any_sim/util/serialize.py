@@ -1,42 +1,31 @@
+"""Serialization and deserialization functions to store objects as JSON."""
+
+from __future__ import annotations
+
 import json
+from typing import Any, Callable, Protocol, TypeVar
+
+C = TypeVar("C")
 
 
-def dict_to_obj(our_dict):
-    """
-    Function that takes in a dict and returns a custom object associated with
-    the dict. This function makes use of the "__module__" and "__class__"
-    metadata in the dictionary to know which object type to create.
-    """
+def dict_to_obj(cls: type[C]) -> Callable[[dict[str, Any]], C]:
+    """Convert a dict into an object."""
 
-    if "__class__" in our_dict:
-        # Pop ensures we remove metadata from the dict to leave only the
-        # instance arguments
-        class_name = our_dict.pop("__class__")
-
-        # Get the module name from the dict and import it
-        module_name = our_dict.pop("__module__")
-
-        # We use the built in __import__ function since the module name is not
-        # yet known at runtime
-        module = __import__(module_name, globals(), locals(), [class_name])
-
-        # Get the class from the module
-        class_ = getattr(module, class_name)
-
+    def hook(our_dict: dict[str, Any]) -> C:
         # Use dictionary unpacking to initialize the object
-        obj = class_(**our_dict)
-    else:
-        obj = our_dict
-    return obj
+        return cls(**our_dict)
+
+    return hook
 
 
-def object_to_dict(obj):
+def object_to_dict(obj: object) -> dict[str, Any]:
     """
-    A function takes in a custom object and returns a dictionary representation
+    Convert object to dict.
+
+    Takes in a custom object and returns a dictionary representation
     of the object. This dict representation includes meta data such as the
     object's module and class names.
     """
-
     #  Populate the dictionary with object meta data
     obj_dict = {"__class__": obj.__class__.__name__, "__module__": obj.__module__}
 
@@ -46,20 +35,14 @@ def object_to_dict(obj):
     return obj_dict
 
 
-def serialize_object(self):
-    data = json.dumps(self, default=object_to_dict, indent=4, sort_keys=True)
+class Serializable(Protocol):
+    """Class that can be serialized to JSON."""
 
-    return data
+    def serialize(self: object) -> str:
+        """Serialize an object into a JSON string."""
+        return json.dumps(self, default=object_to_dict, indent=4, sort_keys=True)
 
-
-def deserialize_object(_cls, data):
-    deserialized_data = json.loads(data, object_hook=dict_to_obj)
-
-    return deserialized_data
-
-
-def serialize(new_class):
-    setattr(new_class, "serialize", serialize_object)
-    setattr(new_class, "deserialize", classmethod(deserialize_object))
-
-    return new_class
+    @classmethod
+    def deserialize(cls: type[C], data: str) -> C:
+        """Deserialize an object from a JSON string."""
+        return json.loads(data, object_hook=dict_to_obj(cls))
