@@ -2,3 +2,4 @@
 dist/
 .env
 ts4/
+*.egg-info

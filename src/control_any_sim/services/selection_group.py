@@ -1,46 +1,63 @@
-from os import path
+"""
+Core service of the mod.
+
+Handles all the patching to make selectable NPC sims possible.
+"""
+
+from __future__ import annotations
 
 import traceback
-import services  # pylint: disable=import-error
+from pathlib import Path
+from typing import TYPE_CHECKING
 
-from sims.sim_info_lod import SimInfoLODLevel  # pylint: disable=import-error
-from sims.sim_info import SimInfo  # pylint: disable=import-error
-from objects import ALL_HIDDEN_REASONS  # pylint: disable=import-error,E0611
-from objects.components.types import INVENTORY_COMPONENT  # pylint: disable=import-error,E0611
-from server.client import Client  # pylint: disable=import-error,E0611
+import services
+from objects import ALL_HIDDEN_REASONS
+from objects.components.types import (
+    INVENTORY_COMPONENT,
+)
+from sims.sim_info_lod import SimInfoLODLevel
+from typing_extensions import Self, TypeVar
 
-from control_any_sim.util.serialize import serialize
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
+from control_any_sim.util.serialize import Serializable
+
+if TYPE_CHECKING:
+    from server.client import Client
+    from sims.sim import Sim
+    from sims.sim_info import SimInfo
+    from zone import Zone
 
 
-def get_home_dir():
-    dir_name = path.dirname(path.abspath(__file__))
-    home_dir = path.normpath(path.join(dir_name, "../../../"))
+def get_home_dir() -> str:
+    """Get path to mods install dir."""
+    dir_name = Path(__file__).resolve().parent
 
-    return home_dir
+    return str(dir_name / ".." / ".." / "..")
 
 
 HOME_DIR = get_home_dir()
 
 
-@serialize
-class SelectionGroupService:
-    instance = None
+C = TypeVar("C", bound="SelectionGroupService")
+
+
+class SelectionGroupService(Serializable):
+    """Service to manage the selection group."""
+
+    instance: Self | None = None
     zone_is_setup = False
-    household_id = None
-    selectable_sims = None
-    household_npcs = None
+    household_id: int
+    selectable_sims: list[int]
+    household_npcs: list[int]
 
     @classmethod
-    def get(cls, household_id, no_init=False):
-        if no_init and not cls.instance:
-            return None
-
-        cls.instance = cls.get_instance(household_id)
-
-        if no_init:
-            return cls.instance
+    def get(
+        cls: type[SelectionGroupService],
+        household_id: int,
+    ) -> SelectionGroupService:
+        """Get current instance of the service for the given household_id."""
+        cls.instance = cls._get_instance(household_id)
 
         if not cls.instance.zone_is_setup:
             cls.instance.setup_zone()
@@ -49,7 +66,18 @@ class SelectionGroupService:
         return cls.instance
 
     @classmethod
-    def get_instance(cls, household_id):
+    def get_existing(cls: type[SelectionGroupService]) -> SelectionGroupService | None:
+        """Get the already initialized instance or None."""
+        if not cls.instance:
+            return None
+
+        return cls.instance
+
+    @classmethod
+    def _get_instance(
+        cls: type[SelectionGroupService],
+        household_id: int,
+    ) -> SelectionGroupService:
         if cls.instance is not None:
             return cls.instance
 
@@ -57,9 +85,11 @@ class SelectionGroupService:
 
         # restore state
         try:
-            file_handler = open(HOME_DIR + "/selection_group.json", encoding="utf8")
-            state = file_handler.read()
-            file_handler.close()
+            with Path(HOME_DIR + "/selection_group.json").open(
+                encoding="utf8",
+            ) as file_handler:
+                state = file_handler.read()
+
             Logger.log(f"restored state: {state}")
         except BaseException:
             state = None
@@ -69,7 +99,7 @@ class SelectionGroupService:
 
         # deserialize
         try:
-            instance = cls.deserialize(state)  # pylint: disable=no-member
+            instance = cls.deserialize(state)
 
             if instance.household_id != household_id:
                 return cls(household_id)
@@ -79,19 +109,21 @@ class SelectionGroupService:
             return cls(household_id)
 
     @property
-    def client(self) -> Client:
+    def client(self: Self) -> Client:
+        """Get the current game client."""
         return services.get_first_client()
 
     def __init__(
-        self,
-        household_id,
-        selectable_sims=None,
-        zone_is_setup=None,
-        household_npcs=None,
-    ):  # pylint: disable=unused-argument
+        self: Self,
+        household_id: int,
+        selectable_sims: list[int] | None = None,
+        zone_is_setup: bool | None = None,  # noqa: ARG002
+        household_npcs: list[int] | None = None,
+    ) -> None:
+        """Create a new instance if the service."""
         self.household_id = household_id
-        self.selectable_sims = selectable_sims
-        self.household_npcs = household_npcs if household_npcs is not None else list()
+        self.selectable_sims = selectable_sims if selectable_sims is not None else []
+        self.household_npcs = household_npcs if household_npcs is not None else []
 
         if self.selectable_sims is None or len(self.selectable_sims) == 0:
             self.update_selectable_sims()
@@ -99,21 +131,28 @@ class SelectionGroupService:
         GameEvents.on_zone_teardown(self.on_zone_teardown)
         GameEvents.on_active_sim_changed(self.on_active_sim_changed)
 
-    def persist_state(self):
-        data = self.serialize()  # pylint: disable=no-member
+    def persist_state(self: Self) -> None:
+        """Write current state of the service to disk."""
+        data = self.serialize()
 
-        file_handler = open(
-            path.join(HOME_DIR, "selection_group.json"), "w", encoding="utf8"
-        )
-        file_handler.write(data)
-        file_handler.close()
+        with (Path(HOME_DIR) / "selection_group.json").open(
+            "w",
+            encoding="utf8",
+        ) as file_handler:
+            file_handler.write(data)
 
-    def update_selectable_sims(self):
+    def update_selectable_sims(self: Self) -> None:
+        """Set selection group to all currently selectable sims."""
         selectable_sims = self.client.selectable_sims
 
         self.selectable_sims = [sim_info.id for sim_info in selectable_sims]
 
-    def on_zone_teardown(self, _zone, _client):
+    def on_zone_teardown(self: Self, _zone: Zone, _client: Client) -> None:
+        """
+        Event handler for when the current zone is beeing teared down.
+
+        Performs cleanup actions and removes all modifications from the game.
+        """
         Logger.log("on_zone_teardown: tearing down SelectionGroupService")
 
         if not self.zone_is_setup:
@@ -128,7 +167,8 @@ class SelectionGroupService:
         self.zone_is_setup = False
         self.__class__.instance = None
 
-    def make_sim_selectable(self, sim_info: SimInfo):
+    def make_sim_selectable(self: Self, sim_info: SimInfo) -> None:
+        """Make the game add the provided sim info to the skewer."""
         if sim_info.is_selectable:
             return
 
@@ -143,13 +183,15 @@ class SelectionGroupService:
         self.client.set_active_sim_by_id(sim_info.id)
         self.client.set_active_sim_by_id(currently_active_sim.id)
 
-    def remove_sim(self, sim_info):
+    def remove_sim(self: Self, sim_info: SimInfo) -> None:
+        """Remove a sim info from the skewer."""
         if sim_info == self.client.active_sim_info:
             self.client.set_next_sim()
 
         self.client.remove_selectable_sim_by_id(sim_info.id)
 
-    def setup_zone(self):
+    def setup_zone(self: Self) -> None:
+        """Perform setup operations when the zone spins up."""
         if len(self.household_npcs) > 0:
             self.client.send_selectable_sims_update()
 
@@ -158,7 +200,7 @@ class SelectionGroupService:
                 sim_info = services.sim_info_manager().get(sim_info_id)
 
                 self.make_sim_selectable(sim_info)
-            except BaseException:
+            except BaseException:  # noqa: PERF203
                 Logger.error(f"failed to add sim to skewer: {sim_info_id}")
                 Logger.error(traceback.format_exc())
 
@@ -166,14 +208,16 @@ class SelectionGroupService:
         self.update_selectable_sims()
         self.zone_is_setup = True
 
-    def is_selectable(self, sim_id):
+    def is_selectable(self: Self, sim_id: int) -> bool:
+        """Check if the sim id is currently selectable."""
         test = sim_id in self.selectable_sims
 
         Logger.log(f"is sim {sim_id} in selectable list: {test}")
 
         return test
 
-    def on_active_sim_changed(self, _old_sim, _new_sim):
+    def on_active_sim_changed(self: Self, _old_sim: Sim, _new_sim: Sim) -> None:
+        """Event handler for when the active sim changes."""
         if self.client is None:
             Logger.log("active sim changed but we have no client, yet?")
             return
@@ -200,7 +244,7 @@ class SelectionGroupService:
             sim_info.publish_all_commodities()
 
             sim_instance = sim_info.get_sim_instance(
-                allow_hidden_flags=ALL_HIDDEN_REASONS
+                allow_hidden_flags=ALL_HIDDEN_REASONS,
             )
 
             if sim_instance is not None:
@@ -213,13 +257,14 @@ class SelectionGroupService:
             Logger.error(f"updating newly active sim: {sim_info!r}")
             Logger.error(traceback.format_exc())
 
-    def cleanup_sims(self):
+    def cleanup_sims(self: Self) -> None:
+        """Remove non household sims from the skewer."""
         for sim_info_id in self.selectable_sims:
             sim_info = services.sim_info_manager().get(sim_info_id)
 
             if sim_info is None:
                 Logger.log(
-                    f"sim with id {sim_info_id} does not exist and shouldn't apear here"
+                    f"sim with id {sim_info_id} does not exist and shouldn't apear here",
                 )
                 continue
 
@@ -227,21 +272,24 @@ class SelectionGroupService:
                 continue
 
             Logger.log(
-                f"{sim_info} is not in household, removing to avoid teardown issues"
+                f"{sim_info} is not in household, removing to avoid teardown issues",
             )
 
             self.remove_sim(sim_info)
 
-    def add_household_npc(self, sim_info):
+    def add_household_npc(self: Self, sim_info: SimInfo) -> None:
+        """Add a sim as household NPC."""
         if sim_info == self.client.active_sim_info:
             self.client.set_next_sim()
 
         self.household_npcs.append(sim_info.id)
         self.client.send_selectable_sims_update()
 
-    def remove_household_npc(self, sim_info):
+    def remove_household_npc(self: Self, sim_info: SimInfo) -> None:
+        """Remove a sim from household NPCs list."""
         self.household_npcs.remove(sim_info.id)
         self.client.send_selectable_sims_update()
 
-    def is_household_npc(self, sim_info):
+    def is_household_npc(self: Self, sim_info: SimInfo) -> bool:
+        """Check if a given SimInfo is a household NPC."""
         return sim_info.id in self.household_npcs
