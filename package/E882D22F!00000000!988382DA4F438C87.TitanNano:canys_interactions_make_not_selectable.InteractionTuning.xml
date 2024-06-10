@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<I c="SimMakeSelectableInteraction" i="interaction" m="control_any_sim.interactions" n="TitanNano:Interaction_Make_Selectable" s="16489283597599966859">
+<I c="SimMakeNotSelectableInteraction" i="interaction" m="control_any_sim.canys_interactions" n="TitanNano:canys_interactions_make_not_selectable" s="10989771389858450567">
   <V n="_saveable" t="disabled" />
   <T n="category">129388<!--pieMenuCategory_Actions--></T>
   <V n="content_score" t="disabled" />
-  <T n="display_name">0x28F6C433<!--Make Selectable--></T>
+  <T n="display_name">0xB195FFA1<!--Make Not Selectable--></T>
   <V n="pie_menu_icon" t="enabled">
     <V n="enabled" t="resource_key">
       <U n="resource_key">
@@ -23,11 +23,6 @@
     </U>
   </V>
   <L n="test_globals">
-    <V t="identity">
-      <U n="identity">
-        <T n="subjects_match">False</T>
-      </U>
-    </V>
     <V t="sim_info">
       <U n="sim_info">
         <V n="ages" t="specified">
