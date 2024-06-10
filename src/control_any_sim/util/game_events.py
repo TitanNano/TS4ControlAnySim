@@ -3,17 +3,19 @@
 from __future__ import annotations
 
 import traceback
-from typing import Any, Callable, ClassVar, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, ClassVar, TypeVar
 
 import services
 from server.client import Client
 from sims.sim import Sim
-from typing_extensions import TypeAlias
 from zone import Zone
 from zone_types import ZoneState
 
 from control_any_sim.util.inject import inject_method_to
 from control_any_sim.util.logger import Logger
+
+if TYPE_CHECKING:
+    from typing_extensions import TypeAlias
 
 
 class GameEvents:

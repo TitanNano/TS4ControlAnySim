@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import traceback
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, TypeVar
 
 import services
 from objects import ALL_HIDDEN_REASONS
@@ -16,7 +16,6 @@ from objects.components.types import (
     INVENTORY_COMPONENT,
 )
 from sims.sim_info_lod import SimInfoLODLevel
-from typing_extensions import Self, TypeVar
 
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
@@ -26,6 +25,7 @@ if TYPE_CHECKING:
     from server.client import Client
     from sims.sim import Sim
     from sims.sim_info import SimInfo
+    from typing_extensions import Self
     from zone import Zone
 
 

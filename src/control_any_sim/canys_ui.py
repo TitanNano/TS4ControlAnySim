@@ -3,17 +3,20 @@
 from __future__ import annotations
 
 from types import MappingProxyType
+from typing import TYPE_CHECKING
 
 from sims4.localization import (
     TunableLocalizedStringFactory,
 )
-from typing_extensions import Self
 from ui.ui_dialog import (
     ButtonType,
     UiDialog,
     UiDialogOk,
     UiDialogResponse,
 )
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 
 def get_string(string_id: str) -> str:

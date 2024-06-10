@@ -3,15 +3,15 @@
 from __future__ import annotations
 
 from functools import wraps
-from typing import Any, Callable, TypeVar
+from typing import TYPE_CHECKING, Any, Callable, TypeVar
 
 import distributor
-from typing_extensions import ParamSpec, TypeAlias
+
+if TYPE_CHECKING:
+    from typing_extensions import TypeAlias
 
 T = TypeVar("T")
 NewFun: TypeAlias = Callable[..., T]
-
-InjectArgs = ParamSpec("InjectArgs")
 
 
 # method calling injection

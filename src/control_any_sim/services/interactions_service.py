@@ -10,6 +10,7 @@ from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.logger import Logger
 
 if TYPE_CHECKING:
+    from interactions.interaction_instance_manager import InteractionInstanceManager
     from sims.sim import Sim
     from type import Self
 
@@ -36,14 +37,14 @@ class InteractionsService:
     @classmethod
     def inject_into_sim(cls: type[Self], sim: Sim) -> None:
         """Event listener that runs every time a new sim is added."""
-        affordance_manager = services.affordance_manager()
+        affordance_manager: InteractionInstanceManager = services.affordance_manager()
         injected_interactions = []
 
         for interaction_id in cls.sim_interactions:
             interaction_class = affordance_manager.get(interaction_id)
 
             if interaction_class is None:
-                Logger.log(
+                Logger.error(
                     f"interaction {interaction_id} not found in affordance_manager",
                 )
                 continue
@@ -62,7 +63,7 @@ class InteractionsService:
             interaction_class = affordance_manager.get(interaction_id)
 
             if interaction_class is None:
-                Logger.log(
+                Logger.error(
                     f"interaction {interaction_id} not found in affordance_manager",
                 )
                 continue

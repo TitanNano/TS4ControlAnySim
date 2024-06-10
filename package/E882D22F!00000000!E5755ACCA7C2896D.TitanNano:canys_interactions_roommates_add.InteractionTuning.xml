@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<I c="SimAddRoomMateInteraction" i="interaction" m="control_any_sim.interactions" n="TitanNano:canys_interactions_roommates_add" s="16534221441995016557">
+<I c="SimAddRoomMateInteraction" i="interaction" m="control_any_sim.canys_interactions" n="TitanNano:canys_interactions_roommates_add" s="16534221441995016557">
   <V n="_saveable" t="disabled" />
   <T n="category">129388<!--pieMenuCategory_Actions--></T>
   <V n="content_score" t="disabled" />

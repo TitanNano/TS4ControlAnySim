@@ -17,7 +17,7 @@ from zone import Zone
 
 import control_any_sim.cheats
 from control_any_sim.services.integrity import IntegrityService
-from control_any_sim.services.interactions import InteractionsService
+from control_any_sim.services.interactions_service import InteractionsService
 from control_any_sim.services.selection_group import SelectionGroupService
 from control_any_sim.util.game_events import GameEvents
 from control_any_sim.util.inject import (

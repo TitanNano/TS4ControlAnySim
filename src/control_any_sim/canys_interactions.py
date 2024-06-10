@@ -10,7 +10,6 @@ from event_testing.results import TestResult
 from interactions.base.immediate_interaction import ImmediateSuperInteraction
 from sims4.utils import flexmethod
 from singletons import DEFAULT
-from typing_extensions import Self
 
 from control_any_sim.services.selection_group import SelectionGroupService
 from control_any_sim.util.logger import Logger
@@ -19,6 +18,7 @@ if TYPE_CHECKING:
     from interactions.context import InteractionContext
     from scheduling import Timeline
     from sims.sim_info import SimInfo
+    from typing_extensions import Self
 
 
 class SimMakeSelectableInteraction(ImmediateSuperInteraction):

@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import json
-from typing import Any, Callable, Protocol, TypeVar
+from typing import Any, Callable, TypeVar
 
 C = TypeVar("C")
 
@@ -35,7 +35,7 @@ def object_to_dict(obj: object) -> dict[str, Any]:
     return obj_dict
 
 
-class Serializable(Protocol):
+class Serializable:
     """Class that can be serialized to JSON."""
 
     def serialize(self: object) -> str:
