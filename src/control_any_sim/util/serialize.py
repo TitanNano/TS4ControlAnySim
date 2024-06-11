@@ -12,6 +12,12 @@ def dict_to_obj(cls: type[C]) -> Callable[[dict[str, Any]], C]:
     """Convert a dict into an object."""
 
     def hook(our_dict: dict[str, Any]) -> C:
+        if "__class__" in our_dict:
+            del our_dict["__class__"]
+
+        if "__module__" in our_dict:
+            del our_dict["__module__"]
+
         # Use dictionary unpacking to initialize the object
         return cls(**our_dict)
 
@@ -23,16 +29,9 @@ def object_to_dict(obj: object) -> dict[str, Any]:
     Convert object to dict.
 
     Takes in a custom object and returns a dictionary representation
-    of the object. This dict representation includes meta data such as the
-    object's module and class names.
+    of the object.
     """
-    #  Populate the dictionary with object meta data
-    obj_dict = {"__class__": obj.__class__.__name__, "__module__": obj.__module__}
-
-    #  Populate the dictionary with object properties
-    obj_dict.update(obj.__dict__)
-
-    return obj_dict
+    return obj.__dict__
 
 
 class Serializable:
