@@ -105,7 +105,8 @@ class SelectionGroupService(Serializable):
                 return cls(household_id)
 
             return instance
-        except BaseException:
+        except BaseException as err:
+            Logger.error(f"Failed to deserialize state: {err}")
             return cls(household_id)
 
     @property
@@ -143,9 +144,13 @@ class SelectionGroupService(Serializable):
 
     def update_selectable_sims(self: Self) -> None:
         """Set selection group to all currently selectable sims."""
-        selectable_sims = self.client.selectable_sims
+        selectable_sims: list[SimInfo] = self.client.selectable_sims
 
-        self.selectable_sims = [sim_info.id for sim_info in selectable_sims]
+        self.selectable_sims = [
+            sim_info.id
+            for sim_info in selectable_sims
+            if sim_info.household_id != self.household_id
+        ]
 
     def on_zone_teardown(self: Self, _zone: Zone, _client: Client) -> None:
         """
@@ -210,11 +215,17 @@ class SelectionGroupService(Serializable):
 
     def is_selectable(self: Self, sim_id: int) -> bool:
         """Check if the sim id is currently selectable."""
-        test = sim_id in self.selectable_sims
+        selectable_sims: list[SimInfo] = self.client.selectable_sims
+
+        test = any(sim_info.sim_id == sim_id for sim_info in selectable_sims)
 
         Logger.log(f"is sim {sim_id} in selectable list: {test}")
 
         return test
+
+    def is_custom_sim(self: Self, sim_info_id: int) -> bool:
+        """Test if a sim is one of the custom sims in the group."""
+        return sim_info_id in self.selectable_sims
 
     def on_active_sim_changed(self: Self, _old_sim: Sim, _new_sim: Sim) -> None:
         """Event handler for when the active sim changes."""
