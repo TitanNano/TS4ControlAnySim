@@ -184,9 +184,16 @@ class SelectionGroupService(Serializable):
 
         currently_active_sim: SimInfo = self.client.active_sim_info
 
+        # potentially load sims household here via the household_manager.
+        Logger.log(
+            f"added sim has household: {sim_info.household_id}, is none: {sim_info.household is None}",
+        )
+
         # force the game to update now selectable NPC tracker information
         self.client.set_active_sim_by_id(sim_info.id)
         self.client.set_active_sim_by_id(currently_active_sim.id)
+        # send update to skewer for good measure
+        self.client.send_selectable_sims_update()
 
     def remove_sim(self: Self, sim_info: SimInfo) -> None:
         """Remove a sim info from the skewer."""
