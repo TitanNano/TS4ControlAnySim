@@ -186,7 +186,7 @@ class SelectionGroupService(Serializable):
 
         # potentially load sims household here via the household_manager.
         Logger.log(
-            f"added sim has household: {sim_info.household_id}, is none: {sim_info.household is None}"
+            f"added sim has household: {sim_info.household_id}, is none: {sim_info.household is None}",
         )
 
         # force the game to update now selectable NPC tracker information
