@@ -8,7 +8,7 @@ from pathlib import Path
 def get_logfile_name() -> str:
     """Get the absolute path to the log file."""
     dir_name: Path = Path(__file__).resolve().parent
-    log_dir = dir_name / ".." / ".." / ".."
+    log_dir = dir_name.parent.parent.parent
 
     return str(log_dir / "debug.log")
 
