@@ -33,7 +33,7 @@ def get_home_dir() -> str:
     """Get path to mods install dir."""
     dir_name = Path(__file__).resolve().parent
 
-    return str(dir_name / ".." / ".." / "..")
+    return str(dir_name.parent.parent.parent)
 
 
 HOME_DIR = get_home_dir()
