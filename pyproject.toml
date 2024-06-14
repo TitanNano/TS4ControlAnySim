@@ -1,6 +1,6 @@
 [project]
 name = "control-any-sim"
-version = "1.2.5"
+version = "1.2.6"
 description = "This is a mod for The Sims 4 by Maxis which allows the player to control any NPC character while playing."
 license = { file = "LICENSE" }
 readme = "README.md"
