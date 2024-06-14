@@ -249,6 +249,6 @@ def canys_client_get_selector_visual_type(
         return original(self, sim_info)
 
 
-Logger.log("starting control_any_sim")
+Logger.log("starting control_any_sim...")
 
 InteractionsService.bootstrap()
