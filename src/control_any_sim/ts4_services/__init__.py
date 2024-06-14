@@ -1,4 +1,5 @@
 """Wrapper for service module to add types."""
+
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
