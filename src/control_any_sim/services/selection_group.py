@@ -327,7 +327,7 @@ class SelectionGroupService(Serializable):
             return
 
         Logger.log(
-            f'Sending selectable sim update for spawned NPC "{sim.first_name} {sim.last_name}"'
+            f'Sending selectable sim update for spawned NPC "{sim.first_name} {sim.last_name}"',
         )
         Logger.log("".join(traceback.format_list(traceback.extract_stack())))
         self.client.send_selectable_sims_update()
@@ -351,6 +351,8 @@ class SelectionGroupService(Serializable):
             allow_hidden_flags=ALL_HIDDEN_REASONS
         )
 
+        if not sim_instance:
+            Logger.log("there is no sim instance during travel")
         if not sim_instance:
             Logger.log("there is no sim instance during travel")
 
