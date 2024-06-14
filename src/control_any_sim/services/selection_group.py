@@ -348,7 +348,7 @@ class SelectionGroupService(Serializable):
             return
 
         sim_instance: Sim = sim_info.get_sim_instance(
-            allow_hidden_flags=ALL_HIDDEN_REASONS
+            allow_hidden_flags=ALL_HIDDEN_REASONS,
         )
 
         if not sim_instance:
