@@ -7,10 +7,13 @@ from typing import TYPE_CHECKING, Any, Callable, ClassVar, TypeVar
 
 import services
 from server.client import Client
+from sims.self_interactions import TravelInteraction
 from sims.sim import Sim
+from sims.sim_info import SimInfo
 from zone import Zone
 from zone_types import ZoneState
 
+from control_any_sim import ts4_services
 from control_any_sim.util.inject import inject_method_to
 from control_any_sim.util.logger import Logger
 
@@ -26,6 +29,8 @@ class GameEvents:
     OnAddSim: TypeAlias = Callable[[Sim], None]
     OnLoadingScreenAnimationFinished: TypeAlias = Callable[[Zone], None]
     OnActiveSimChanged: TypeAlias = Callable[[Sim, Sim], None]
+    OnTravelSimOut: TypeAlias = Callable[[SimInfo], None]
+    OnPostSpawnSim: TypeAlias = Callable[[Sim], None]
 
     C = TypeVar("C", bound="GameEvents")
 
@@ -35,6 +40,7 @@ class GameEvents:
     loading_screen_animation_finished_handlers: ClassVar[
         list[OnLoadingScreenAnimationFinished]
     ] = []
+    travel_sim_out_handlers: ClassVar[list[OnTravelSimOut]] = []
 
     @classmethod
     def on_zone_teardown(cls: type[C], handler: OnZoneTeardown) -> None:
@@ -108,6 +114,22 @@ class GameEvents:
         for handler in cls.loading_screen_animation_finished_handlers:
             handler(current_zone)
 
+    @classmethod
+    def on_travel_sim_out(cls: type[C], handler: OnTravelSimOut) -> None:
+        """Add a listener for the travel_sim_out event."""
+        cls.travel_sim_out_handlers.append(handler)
+
+    @classmethod
+    def emit_travel_sim_out(cls: type[C], sim_info: SimInfo) -> None:
+        """Emit the travel sim out event."""
+        for handler in cls.travel_sim_out_handlers:
+            handler(sim_info)
+
+    @staticmethod
+    def on_post_spawn_sim(handler: OnPostSpawnSim) -> None:
+        """Adda listener for the post spawn sim event."""
+        ts4_services.sim_spawner_service().register_sim_spawned_callback(handler)
+
 
 @inject_method_to(Zone, "on_teardown")
 def canys_zone_on_teardown(
@@ -177,3 +199,22 @@ def canys_zone_on_loading_screen_animation_finished(
         Logger.error(traceback.format_exc())
 
     return original(self)
+
+
+@inject_method_to(TravelInteraction, "save_and_destroy_sim")
+def canys_travel_internaction_save_and_destroy_sim(
+    original: Callable[[TravelInteraction, bool, SimInfo], None],
+    self: TravelInteraction,
+    on_reset: bool,  # noqa: FBT001
+    sim_info: SimInfo,
+) -> None:
+    """Wrap the TravelInteraction::save_and_destroy_sim method to emit the corresponding event."""
+    try:
+        result = original(self, on_reset, sim_info)
+
+        GameEvents.emit_travel_sim_out(sim_info)
+    except Exception as err:
+        Logger.error(f"{err}")
+        Logger.error(traceback.format_exc())
+
+    return result

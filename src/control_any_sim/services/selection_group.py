@@ -131,6 +131,8 @@ class SelectionGroupService(Serializable):
 
         GameEvents.on_zone_teardown(self.on_zone_teardown)
         GameEvents.on_active_sim_changed(self.on_active_sim_changed)
+        GameEvents.on_post_spawn_sim(self.on_spawn_sim)
+        GameEvents.on_travel_sim_out(self.on_sim_travel_out)
 
     def persist_state(self: Self) -> None:
         """Write current state of the service to disk."""
@@ -311,3 +313,47 @@ class SelectionGroupService(Serializable):
     def is_household_npc(self: Self, sim_info: SimInfo) -> bool:
         """Check if a given SimInfo is a household NPC."""
         return sim_info.id in self.household_npcs
+
+    def on_spawn_sim(
+        self: Self,
+        sim: Sim,
+    ) -> None:
+        """
+        Event handler for when a sim finished spawning.
+
+        Send selectable sim update if the new sim is a controlled NPC.
+        """
+        if not self.is_custom_sim(sim.id):
+            return
+
+        Logger.log(f'Sending selectable sim update for spawned NPC "{sim.first_name} {sim.last_name}"')
+        Logger.log("".join(traceback.format_list(traceback.extract_stack())))
+        self.client.send_selectable_sims_update()
+
+    def on_sim_travel_out(
+        self: Self,
+        sim_info: SimInfo,
+    ) -> None:
+        """
+        Event handler for when a sim travels out of the current zone.
+
+        Send selectable sim update if the leaving sim is a controlled NPC.
+        """
+        if not self.is_custom_sim(sim_info.id):
+            Logger.log(
+                "Traveling a sim out of the current zone, but it's not a custom selection NPC.",
+            )
+            return
+
+        sim_instance: Sim = sim_info.get_sim_instance(allow_hidden_flags=ALL_HIDDEN_REASONS)
+
+        if not sim_instance:
+            Logger.log("there is no sim instance during travel")
+
+        Logger.log(
+            f'Sending selectable sim update for traveling NPC "{sim_info.first_name} {sim_info.last_name}"',
+        )
+
+        sim_instance.schedule_destroy_asap(
+            post_delete_func=self.client.send_selectable_sims_update,
+        )
