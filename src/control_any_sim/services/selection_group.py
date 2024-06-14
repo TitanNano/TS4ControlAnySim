@@ -326,7 +326,9 @@ class SelectionGroupService(Serializable):
         if not self.is_custom_sim(sim.id):
             return
 
-        Logger.log(f'Sending selectable sim update for spawned NPC "{sim.first_name} {sim.last_name}"')
+        Logger.log(
+            f'Sending selectable sim update for spawned NPC "{sim.first_name} {sim.last_name}"'
+        )
         Logger.log("".join(traceback.format_list(traceback.extract_stack())))
         self.client.send_selectable_sims_update()
 
