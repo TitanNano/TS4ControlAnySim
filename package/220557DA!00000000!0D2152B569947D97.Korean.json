@@ -6,43 +6,43 @@
   "Entries": [
     {
       "Key": "0x28F6C433",
-      "Value": "Control Sim"
+      "Value": "심 제어하기"
     },
     {
       "Key": "0xB195FFA1",
-      "Value": "Don't Control Sim"
+      "Value": "심 제어 그만두기"
     },
     {
       "Key": "0x098A53E9",
-      "Value": "You are currently running ControlAnySim Version {0.String}, which is a experimental preview version!\\n\\nExperimental versions are not indended for normal players, but for testing bug fixes and new features!\\n\\nIf you didn't install this version on purpose, you should not use it!"
+      "Value": "ControlAnySim 버전 {0.String}을 실행중이며 이 버전은 실험적 미리보기 버전입니다!\\n\\n실험적 버전은 일반 플레이어용이 아니며, 버그 수정이나 새로운 기능을 실험하기 위한 버전입니다!\\n\\n이 버전을 의도적으로 설치한것이 아니라면, 사용하지 않아야 합니다!"
     },
     {
       "Key": "0x39BA3179",
-      "Value": "Quit Game"
+      "Value": "게임 종료"
     },
     {
       "Key": "0x688D35BF",
-      "Value": "I know what I'm doing"
+      "Value": "이해했으며 계속합니다"
     },
     {
       "Key": "0x915E911B",
-      "Value": "Control Any Sim WARNING"
+      "Value": "Control Any Sim 경고"
     },
     {
       "Key": "0x083C2912",
-      "Value": "Add To Roommates"
+      "Value": "룸메이트로 추가"
     },
     {
       "Key": "0xA7E24CAA",
-      "Value": "Remove From Roommates"
+      "Value": "룸메이트에서 삭제"
     },
     {
       "Key": "0x284AD579",
-      "Value": "Turn Into Household NPC"
+      "Value": "가족 NPC로 변경"
     },
     {
       "Key": "0xDECE0085",
-      "Value": "Turn Into Household Member"
+      "Value": "가족 구성원으로 변경"
     }
   ],
   "DataLength": "0x000001C8",
