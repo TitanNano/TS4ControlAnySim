@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<I c="SimMakeNotSelectableInteraction" i="interaction" m="control_any_sim.canys_interactions" n="TitanNano:canys_interactions_make_not_selectable" s="10989771389858450567">
+<I c="SimMakeNotSelectableInteraction" i="interaction" m="control_any_sim.canys_interactions" n="TitanNano:canys_interactions_make_not_selectable" s="12735481031376234075">
   <V n="_saveable" t="disabled" />
   <T n="category">129388<!--pieMenuCategory_Actions--></T>
   <V n="content_score" t="disabled" />

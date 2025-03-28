@@ -3,3 +3,5 @@ dist/
 .env
 ts4/
 *.egg-info
+.s4-tools/
+package/build/
