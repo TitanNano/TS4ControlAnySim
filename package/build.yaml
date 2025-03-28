@@ -1,0 +1,18 @@
+output: build
+
+strings:
+  - name: strings.package
+    files:
+      - "*.properties"
+
+packages:
+  - name: tuning.package
+    files:
+      - "*.xml"
+
+merges:
+  - name: ControlAnySim.package
+    combineStrings: false
+    files:
+      - build/strings.package
+      - build/tuning.package
