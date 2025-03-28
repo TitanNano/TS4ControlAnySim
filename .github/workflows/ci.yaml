@@ -16,15 +16,17 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: setup rye
-        uses: eifinger/setup-rye@v3
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
       - name: install dependencies
-        run: rye sync
+        run: uv sync
       - name: lint
-        run: rye run ruff check src/
+        run: uv run ruff check src/
       - name: auto fix
         if: ${{ failure() }}
-        run: rye run ruff check --fix src/
+        run: uv run ruff check --fix src/
       - name: suggest changes
         if: ${{ failure() }}
         uses: parkerbxyz/suggest-changes@v1.0.4
@@ -35,15 +37,17 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: setup rye
-        uses: eifinger/setup-rye@v3
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
       - name: install dependencies
-        run: rye sync
+        run: uv sync
       - name: format
-        run: rye run ruff format --check src/
+        run: uv run ruff format --check src/
       - name: auto fix
         if: ${{ failure() }}
-        run: rye run ruff format src/
+        run: uv run ruff format src/
       - name: suggest changes
         if: ${{ failure() }}
         uses: parkerbxyz/suggest-changes@v1.0.4
@@ -54,9 +58,11 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
-      - name: setup rye
-        uses: eifinger/setup-rye@v3
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "latest"
       - name: install dependencies
-        run: rye sync
+        run: uv sync
       - name: type check
-        run: rye run mypy --disable-error-code "import" src/
+        run: uv run mypy --disable-error-code "import" src/

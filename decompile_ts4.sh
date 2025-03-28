@@ -23,7 +23,7 @@ for file in $files
 do
     out_dir="$script_dir/ts4/$(dirname ${file#$source_dir})/"
     mkdir -p $out_dir
-    rye run decompyle3 -o $out_dir $file &
+    uv run decompyle3 -o $out_dir $file &
 
     progress $(($files_done*100/$files_total))
         

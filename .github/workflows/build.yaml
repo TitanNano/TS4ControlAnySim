@@ -21,14 +21,16 @@ jobs:
       with:
         ref: ${{ inputs.tag }}
         fetch-depth: 0
-    - name: Setup Rye
-      uses: eifinger/setup-rye@v3
+    - name: Install the latest version of uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        version: "latest"
     - name: Install Dependencies
-      run: rye sync
+      run: uv sync
     - name: Build
       run: ./build.sh --deploy
     - name: Artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
           name: control-any-sim
           path: dist/ControlAnySim.zip
