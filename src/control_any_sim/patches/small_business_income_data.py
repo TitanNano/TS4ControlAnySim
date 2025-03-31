@@ -15,7 +15,13 @@ if TYPE_CHECKING:
 
 
 @inject_method_to(SmallBusinessIncomeData, "_should_apply_markup_for_gain")
-def canys_should_apply_markup_for_gain(original: Callable[[SmallBusinessIncomeData, Sim, Any, Any], bool], self: SmallBusinessIncomeData, target_sim: Sim, interaction: Any, tags: Any | None = None) -> bool:  # noqa: ANN401
+def canys_should_apply_markup_for_gain(
+    original: Callable[[SmallBusinessIncomeData, Sim, Any, Any], bool],
+    self: SmallBusinessIncomeData,
+    target_sim: Sim,
+    interaction: Any,  # noqa: ANN401
+    tags: Any | None = None,  # noqa: ANN401
+) -> bool:
     """
     Override for SmallBusinessIncomeData::_should_apply_markup_for_gain method.
 
