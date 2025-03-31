@@ -195,7 +195,7 @@ class SimMakeNotSelectableInteraction(ImmediateSuperInteraction):
             return False
 
     @classmethod
-    def _must_be_selectable(cls: type[C], sim_info: SimInfo) -> bool:
+    def _must_be_selectable(cls, sim_info: SimInfo) -> bool:
         return services.active_household_id() == sim_info.household_id
 
 
