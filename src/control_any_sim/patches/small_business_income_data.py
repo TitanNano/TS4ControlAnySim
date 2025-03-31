@@ -21,7 +21,8 @@ def canys_should_apply_markup_for_gain(original: Callable[[SmallBusinessIncomeDa
 
     Fixes bug in the original implementation when the interaction.sim is not present.
 
-    Returns:
+    Returns
+    -------
         If the markup should be applied.
 
     """
@@ -29,7 +30,11 @@ def canys_should_apply_markup_for_gain(original: Callable[[SmallBusinessIncomeDa
         return False
 
     # set an interaction sim when none is present. The original function incorrectly checks for a null value and runs into an attribute error otherwise.
-    if interaction is not None and self.is_sim_an_employee(target_sim.sim_info) and isinstance(interaction.sim, property):
+    if (
+        interaction is not None
+        and self.is_sim_an_employee(target_sim.sim_info)
+        and isinstance(interaction.sim, property)
+    ):
         interaction.sim = target_sim
 
     return original(self, target_sim, interaction, tags)
