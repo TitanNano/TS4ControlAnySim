@@ -12,11 +12,11 @@ email = "jovan.gerodetti@titannano.de>"
 
 [tool.uv]
 dev-dependencies = [
-    "ruff~=0.4.7",
-    "decompyle3~=3.9.1",
-    "pylint~=2.6.0",
-    "python-lsp-server[rope]~=1.7.4",
-    "pylsp-mypy~=0.6.7",
+    "ruff>=0.11.0",
+    "pylint>=2.6.0",
+    "python-lsp-server[rope]>=1.7.4",
+    "pylsp-mypy>=0.6.7",
+    "uncompyle6>=3.9.2",
 ]
 
 [tool.ruff.lint]

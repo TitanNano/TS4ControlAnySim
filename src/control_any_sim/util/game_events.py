@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import traceback
-from typing import TYPE_CHECKING, Any, Callable, ClassVar, TypeVar
+from typing import TYPE_CHECKING, Callable, ClassVar, TypeVar
 
 import services
 from server.client import Client
@@ -43,12 +43,12 @@ class GameEvents:
     travel_sim_out_handlers: ClassVar[list[OnTravelSimOut]] = []
 
     @classmethod
-    def on_zone_teardown(cls: type[C], handler: OnZoneTeardown) -> None:
+    def on_zone_teardown(cls, handler: OnZoneTeardown) -> None:
         """Add a listener for the zone_teardown event."""
         cls.zone_teardown_handlers.append(handler)
 
     @classmethod
-    def remove_zone_teardown(cls: type[C], handler: OnZoneTeardown) -> None:
+    def remove_zone_teardown(cls, handler: OnZoneTeardown) -> None:
         """Remove a listener for the zone_teardown event."""
         if handler not in cls.zone_teardown_handlers:
             return
@@ -56,7 +56,7 @@ class GameEvents:
         cls.zone_teardown_handlers.remove(handler)
 
     @classmethod
-    def emit_zone_teardown(cls: type[C], current_zone: Zone, client: Client) -> None:
+    def emit_zone_teardown(cls, current_zone: Zone, client: Client) -> None:
         """Emit a zone teardown event."""
         Logger.log(
             f"registered zone teardown handlers: {len(cls.zone_teardown_handlers)}",
@@ -66,13 +66,13 @@ class GameEvents:
             handler(current_zone, client)
 
     @classmethod
-    def on_zone_spin_up(cls: type[C], handler: OnZoneSpinUp) -> None:
+    def on_zone_spin_up(cls, handler: OnZoneSpinUp) -> None:
         """Add a listener for the zone_spin_up event."""
         cls.zone_spin_up_handlers.append(handler)
 
     @classmethod
     def emit_zone_spin_up(
-        cls: type[C],
+        cls,
         current_zone: Zone,
         household_id: int,
         active_sim_id: int,
@@ -82,12 +82,12 @@ class GameEvents:
             handler(current_zone, household_id, active_sim_id)
 
     @classmethod
-    def on_add_sim(cls: type[C], handler: OnAddSim) -> None:
+    def on_add_sim(cls, handler: OnAddSim) -> None:
         """Add a listener for the add_sim event."""
         cls.add_sim_handlers.append(handler)
 
     @classmethod
-    def emit_add_sim(cls: type[C], sim: Sim) -> None:
+    def emit_add_sim(cls, sim: Sim) -> None:
         """Emit the add sim event."""
         for handler in cls.add_sim_handlers:
             handler(sim)
@@ -99,7 +99,7 @@ class GameEvents:
 
     @classmethod
     def on_loading_screen_animation_finished(
-        cls: type[C],
+        cls,
         handler: OnLoadingScreenAnimationFinished,
     ) -> None:
         """Add a listener for the loading_screen_animation_finished event."""
@@ -107,7 +107,7 @@ class GameEvents:
 
     @classmethod
     def emit_loading_screen_animation_finished(
-        cls: type[C],
+        cls,
         current_zone: Zone,
     ) -> None:
         """Emit the loading screen finished event."""
@@ -115,12 +115,12 @@ class GameEvents:
             handler(current_zone)
 
     @classmethod
-    def on_travel_sim_out(cls: type[C], handler: OnTravelSimOut) -> None:
+    def on_travel_sim_out(cls, handler: OnTravelSimOut) -> None:
         """Add a listener for the travel_sim_out event."""
         cls.travel_sim_out_handlers.append(handler)
 
     @classmethod
-    def emit_travel_sim_out(cls: type[C], sim_info: SimInfo) -> None:
+    def emit_travel_sim_out(cls, sim_info: SimInfo) -> None:
         """Emit the travel sim out event."""
         for handler in cls.travel_sim_out_handlers:
             handler(sim_info)
@@ -133,10 +133,10 @@ class GameEvents:
 
 @inject_method_to(Zone, "on_teardown")
 def canys_zone_on_teardown(
-    original: Callable[[Zone, Client], Any],
+    original: Callable[[Zone, Client], None],
     self: Zone,
     client: Client,
-) -> Any:  # noqa: ANN401
+) -> None:
     """Wrap around the Zone::on_teardown method to emit the coresponding event."""
     try:
         Logger.log("Zone.on_teardown event occurred")
