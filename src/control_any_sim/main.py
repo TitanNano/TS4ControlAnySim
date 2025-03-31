@@ -19,6 +19,7 @@ from venues.zone_director_residential import (
 )
 
 import control_any_sim.cheats
+import control_any_sim.patches.small_business_income_data
 from control_any_sim import ts4_services
 from control_any_sim.services.integrity import IntegrityService
 from control_any_sim.services.interactions_service import InteractionsService
@@ -221,6 +222,7 @@ def canys_client_get_selector_visual_type(
     Override for Client::_get_selector_visual_type method.
 
     Clear selector visual type override for controled sims.
+
     """
     try:
         Logger.log("getting selector visual type")
