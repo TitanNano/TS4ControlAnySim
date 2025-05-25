@@ -25,6 +25,3 @@ All changes should be submitted via Pull-Requests. Also, please make sure there
 is an issue corresponding to the change you are submitting.
 If you'd like to make a change for something for which there is no issue yet,
 file an issue first and we can discuss new ideas as well as problems and bugs.
-
-## Sponsors
-<a href="https://github.com/jwidanka06"><img alt="JCW" style="border-radius: 50%" src="https://avatars.githubusercontent.com/u/83819729?v=4" width="50"></a>
