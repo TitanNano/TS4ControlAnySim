@@ -1,0 +1,12 @@
+name: 'Install Python via UV'
+description: 'Installs the requested python version via UV. This action expects uv to be setup.'
+runs:
+  using: "composite"
+  steps:
+    - name: Download Python Version info
+      run: wget https://raw.githubusercontent.com/astral-sh/uv/refs/tags/0.6.17/crates/uv-python/download-metadata.json
+      shell: bash
+
+    - name: Install requested python version
+      run: uv python install --python-downloads-json-url ./download-metadata.json
+      shell: bash

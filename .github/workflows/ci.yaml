@@ -11,7 +11,7 @@ jobs:
     uses: ./.github/workflows/build.yaml
 
   ruff-lint:
-    runs-on: 'ubuntu-20.04'
+    runs-on: 'ubuntu-24.04'
 
     steps:
       - name: checkout
@@ -20,6 +20,8 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
+      - name: install python
+        uses: ./.github/actions/install-python
       - name: install dependencies
         run: uv sync
       - name: lint
@@ -32,7 +34,7 @@ jobs:
         uses: parkerbxyz/suggest-changes@v1.0.4
 
   ruff-format:
-    runs-on: 'ubuntu-20.04'
+    runs-on: 'ubuntu-24.04'
 
     steps:
       - name: checkout
@@ -41,6 +43,8 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
+      - name: install python
+        uses: ./.github/actions/install-python
       - name: install dependencies
         run: uv sync
       - name: format
@@ -53,7 +57,7 @@ jobs:
         uses: parkerbxyz/suggest-changes@v1.0.4
 
   mypy:
-    runs-on: 'ubuntu-20.04'
+    runs-on: 'ubuntu-24.04'
 
     steps:
       - name: checkout
@@ -62,6 +66,8 @@ jobs:
         uses: astral-sh/setup-uv@v5
         with:
           version: "latest"
+      - name: install python
+        uses: ./.github/actions/install-python
       - name: install dependencies
         run: uv sync
       - name: type check
